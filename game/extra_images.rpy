@@ -1,20 +1,22 @@
 init -10:
     define mannequin_average = Image(get_file_handle("mannequin_average.png"))
 
-    define house_background = Image(get_file_handle("Home_Background.png"))
+    define house_background = Image(get_file_handle("Home_Background.jpg"))
     define apartment_background = Image(get_file_handle("Apartment_Lobby.png"))
-    define bedroom_background = Image(get_file_handle("Bedroom_1.png"))
-    define home_bathroom_background = Image(get_file_handle("Home_Bathroom_Background.png"))
+    define bedroom_background = Image(get_file_handle("Bedroom_Background.jpg"))
+    define home_bathroom_background = Image(get_file_handle("Home_Bathroom_Background.jpg"))
     define old_home_shower_background = Image(get_file_handle("Home_Shower_Background_Old.jpg"))
     define home_shower_background = Image(get_file_handle("Home_Shower_Background.jpg"))
-    define kitchen_background = Image(get_file_handle("Kitchen_1.png"))
+    define kitchen_background = Image(get_file_handle("Kitchen_Background.jpg"))
     define laundry_room_background = Image(get_file_handle("Laundry_Room_Background.jpg"))
     define her_hallway_background = Image(get_file_handle("her_hallway_background.jpg"))
     define dungeon_background = Image(get_file_handle("Dungeon_Background.jpg"))
     define harem_mansion_background = Image(get_file_handle("harem_mansion.jpg"))
     define lily_bedroom_background = Image(get_file_handle("Lily_Bedroom_Background.jpg"))
     define cousin_bedroom_background = Image(get_file_handle("Cousin_Bedroom_Background.jpg"))
-    define mall_background = Image(get_file_handle("Mall_Background.png"))
+
+
+    define mall_background = Image(get_file_handle("Mall_Background.jpg"))
     define electronics_store_background = Image(get_file_handle("Electronics_Store_Background.jpg"))
     define home_improvement_store_background = Image(get_file_handle("Home_Improvement_Store_Background.jpg"))
     define bathroom_background = Image(get_file_handle("Bathroom_Background.png"))
@@ -28,6 +30,8 @@ init -10:
     define coffee_shop_background = Image(get_file_handle("Coffee_Shop_Background.jpg"))
     define gaming_cafe_background = Image(get_file_handle("Internet_Cafe_Background.jpg"))
     define gaming_cafe_store_room_background = Image(get_file_handle("Internet_Cafe_Store_Room_Background.jpg"))
+    define mall_bathroom_background = Image(get_file_handle("Mall_Bathroom_Background.jpg"))
+    define office_photocopy_background = Image(get_file_handle("Office_PhotoCopy_Background.jpg"))
 
     define ceo_office_background = Image(get_file_handle("CEO_Office_Background.jpg"))
     define lab_background = Image(get_file_handle("Lab_Background.png"))
@@ -49,16 +53,19 @@ init -10:
     define police_jail_background = Image(get_file_handle("Police_Jail_Background.jpg"))
 
     define bar_background = Image(get_file_handle("Bar_Background.png"))
-    define stripclub_background = Image(get_file_handle("Club_Background.png"))
+    define bar_bathroom_background = Image(get_file_handle("Bar_Bathroom_Background.jpg"))
+    define stripclub_background = Image(get_file_handle("Club_Background.jpg"))
+    define stripclub_dressing_room_background = Image(get_file_handle("Club_Dressing_Room_Background.jpg"))
     define bdsm_room_background = Image(get_file_handle("BDSM_Room_Background.jpg"))
     define hotel_background = Image(get_file_handle("Hotel_Lobby_Background.jpg"))
     define hotel_room_background = Image(get_file_handle("Hotel_Room_Background.jpg"))
     define hospital_background = Image(get_file_handle("Hospital_Background.jpg"))
     define hospital_room_background = Image(get_file_handle("Hospital_Room_Background.jpg"))
 
-    define campus_background = Image(get_file_handle("Campus.png"))
+    define campus_background = Image(get_file_handle("Campus_Background.jpg"))
     define university_library_background = Image(get_file_handle("University_Library_Background.jpg"))
     define university_study_room_background = Image(get_file_handle("Study_Room_Background.jpg"))
+    define university_bathroom_background = Image(get_file_handle("University_Bathroom_Background.jpg"))
     define student_apartment_background = Image(get_file_handle("student_apartment_background.jpg"))
 
     define restaurant_background = Image(get_file_handle("Restaurant_Background.png"))
@@ -150,7 +157,7 @@ init -10:
     image starttrance = "[starttrance_image.filename]"
     image donetrain = "[donetrain_image.filename]"
 
-    image labbook = "[labbook_image.filname]"
+    image labbook = "[labbook_image.filename]"
     image matureteen = "[matureteen_image.filename]"
     image ahegaoface = "[ahegaoface_image.filename]"
     
