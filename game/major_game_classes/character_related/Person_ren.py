@@ -28,7 +28,7 @@ from game.main_character.perks.Perks_ren import perk_system
 from game.main_character.mc_serums._mc_serum_definitions_ren import mc_serum_aura_obedience, mc_serum_aura_fertility
 from game.main_character.MainCharacter_ren import mc
 from game.map.map_code_ren import list_of_hubs
-from game.map.MapHub_ren import MapHub, home_hub, office_hub, strip_club_hub, harem_hub, aunt_home_hub
+from game.map.MapHub_ren import MapHub, home_hub, office_hub, strip_club_hub, harem_hub, aunt_home_hub, university_hub
 from game.map.HomeHub_ren import HomeHub, residential_home_hub, industrial_home_hub, downtown_home_hub, university_home_hub
 from game.game_roles._role_definitions_ren import Role, girlfriend_role, harem_role, affair_role, generic_student_role, instapic_role, dikdok_role, onlyfans_role, trance_role, heavy_trance_role, very_heavy_trance_role, slave_role, caged_role, anal_fetish_role, cum_fetish_role, breeding_fetish_role, exhibition_fetish_role, jealous_sister_role, jealous_act_get_score
 from game.game_roles.role_pregnant_definition_ren import become_pregnant, pregnant_role
@@ -43,12 +43,11 @@ from game.major_game_classes.clothing_related.zip_manager_ren import emotion_ima
 from game.major_game_classes.business_related.Infraction_ren import Infraction
 from game.major_game_classes.serum_related.SerumDesign_ren import SerumDesign
 from game.major_game_classes.serum_related.serums.fetish_serums_ren import start_anal_fetish_quest, start_cum_fetish_quest, start_breeding_fetish_quest
-from game.major_game_classes.serum_related.SerumTrait_ren import SerumTrait
 from game.major_game_classes.game_logic.Action_ren import Action, Limited_Time_Action
 from game.major_game_classes.game_logic.ActionList_ren import ActionList
 from game.major_game_classes.game_logic.Duty_ren import Duty
 from game.major_game_classes.game_logic.Position_ren import Position
-from game.major_game_classes.game_logic.Room_ren import Room, list_of_places, lily_bedroom, mom_bedroom, aunt_bedroom, cousin_bedroom, strip_club, prostitute_bedroom, generic_bedroom_1, generic_bedroom_2, generic_bedroom_3, generic_bedroom_4, gym, gym_shower, her_hallway, purgatory, dungeon, clone_facility, downtown_bar, standard_indoor_lighting
+from game.major_game_classes.game_logic.Room_ren import Room, list_of_places, lily_bedroom, mom_bedroom, aunt_bedroom, cousin_bedroom, strip_club, bdsm_room, prostitute_bedroom, generic_bedroom_1, generic_bedroom_2, generic_bedroom_3, generic_bedroom_4, gym, gym_shower, her_hallway, purgatory, dungeon, clone_facility, downtown_bar, standard_indoor_lighting, mom_office_lobby, mom_offices
 from game.major_game_classes.game_logic.RoomObject_factories_ren import make_wall, make_floor, make_couch, make_window
 from game.major_game_classes.character_related.scene_manager_ren import Scene
 from game.major_game_classes.character_related.configuration.opinion_lists_ren import init_list_of_opinions, init_list_of_sexy_opinions
@@ -58,7 +57,7 @@ from game.major_game_classes.character_related.Progression_ren import Progressio
 from game.major_game_classes.character_related.Personality_ren import Personality, list_of_personalities
 from game.major_game_classes.character_related.Schedule_ren import Schedule
 from game.major_game_classes.character_related.configuration.character_name_lists_ren import init_list_of_last_names, init_list_of_male_names, init_list_of_names
-from game.major_game_classes.character_related._job_definitions_ren import JobDefinition, nora_professor_job, university_professor_job, doctor_job, waitress_job, unemployed_job, stripper_job, stripclub_stripper_job, stripclub_bdsm_performer_job, stripclub_mistress_job, stripclub_waitress_job, stripclub_manager_job, prostitute_job
+from game.major_game_classes.character_related._job_definitions_ren import JobDefinition, university_professor_job, student_job, doctor_job, waitress_job, unemployed_job, stripper_job, stripclub_stripper_job, stripclub_bdsm_performer_job, stripclub_mistress_job, stripclub_waitress_job, stripclub_manager_job, prostitute_job, secretary_job, office_worker_job, lawyer_job, architect_job, interior_decorator_job, fashion_designer_job
 from game.major_game_classes.character_related.ActiveJob_ren import ActiveJob
 from game.major_game_classes.clothing_related.Clothing_ren import Clothing
 from game.major_game_classes.character_related.Relationship_ren import RelationshipArray
@@ -69,6 +68,8 @@ from game.major_game_classes.clothing_related.wardrobe_builder_ren import Wardro
 from game.major_game_classes.clothing_related.wardrobe_preferences_ren import WardrobePreference
 from game.major_game_classes.clothing_related.LimitedWardrobeCollection_ren import limited_wardrobes
 from game.people.Sarah.sarah_definition_ren import sarah_threesomes_unlocked
+from game.people.Nora.nora_definition_ren import nora_professor_job
+from game.people.Lily.lily_definition_ren import sister_student_job
 
 GAME_SPEED = 1
 TIER_0_TIME_DELAY = 1
@@ -2020,10 +2021,19 @@ class Person(): #Everything that needs to be known about a person.
         destination = self.get_destination() #None destination means they have free time
         if not destination:
             exclude_list = []
-            if strip_club_is_closed() or self.sluttiness < 20:  # exclude stripclub from random destinations
-                exclude_list.append(strip_club)
-            if self.opinion.sports <= -2: # when she hates sports she won't go to the gym
+            if strip_club_is_closed():  # exclude stripclub from random destinations
+                exclude_list.extend((strip_club, bdsm_room))
+            else:
+                if self.sluttiness < 40:
+                    exclude_list.append(bdsm_room)
+                if self.sluttiness < 30:
+                    exclude_list.append(strip_club)
+            if self.opinion.sports < 0: # when she hates / dislikes sports she won't go to the gym
                 exclude_list.extend((gym, gym_shower))
+            if not (self.has_role(college_intern_role) or self.has_job((nora_professor_job, university_professor_job, student_job, sister_student_job))):
+                exclude_list.extend(university_hub.locations)
+            if not (self.has_job((secretary_job, office_worker_job, lawyer_job, architect_job, interior_decorator_job, fashion_designer_job))):
+                exclude_list.extend((mom_office_lobby, mom_offices))
 
             destination = get_random_from_list([x for x in list_of_places if (x.is_public and x.is_accessible and x not in exclude_list) or x == self.home])
 
