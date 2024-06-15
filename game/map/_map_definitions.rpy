@@ -31,7 +31,7 @@ label instantiate_map_locations():
         ##PC's Work##
         ceo_office = Room("ceo_office", "CEO Office", ceo_office_background, ceo_office_objects,
             actions = [policy_purchase_action, set_uniform_action, set_serum_action],
-            map_pos = [1,0], lighting_conditions = standard_indoor_lighting)
+            map_pos = [1,0], lighting_conditions = standard_indoor_lighting, allow_walk_in = True)
         lobby = Room("lobby", "Lobby", lobby_background, [make_floor(), make_wall(), make_reception(), make_chair(), make_front_door(), make_window()],
             map_pos = [1,1], tutorial_label = "lobby_tutorial_intro", lighting_conditions = standard_indoor_lighting, privacy_level = 2)
         office = Room("main_office", "Main Offices", office_background, [make_floor(), make_desk(), make_window(), make_chair(), make_wall()],
@@ -49,11 +49,11 @@ label instantiate_map_locations():
         clone_facility = Room("clone_facility", "Cloning Facility", clone_facility_background, [make_floor(), make_desk(), make_chair(), make_wall()],
             map_pos = [1,2], visible = False, lighting_conditions = standard_indoor_lighting, darken = False)
         work_bathroom = Room("work_bathroom", "Work Bathroom", bathroom_background, [make_wall(), make_floor(), make_toilet(), make_sink()],
-            visible = False, lighting_conditions = standard_indoor_lighting, privacy_level = 2, darken = False)
+            visible = False, lighting_conditions = standard_indoor_lighting, privacy_level = 2, darken = False, allow_walk_in = True)
         testing_room = Room("testing_room", "Test Room", testing_room_background, [make_floor(), make_wall(), make_medical_table(), make_mirror()],
             visible = False, lighting_conditions = standard_indoor_lighting, darken = False)
         storage_room = Room("storage_room", "Storage Room", storage_room_background, [make_floor(), make_wall(), make_door()],
-            visible = False, lighting_conditions = standard_indoor_lighting, privacy_level = 2, darken = False)
+            visible = False, lighting_conditions = standard_indoor_lighting, privacy_level = 2, darken = False, allow_walk_in = True)
         break_room = Room("break_room", "Break Room", break_room_background, [make_floor(), make_wall(), make_table(), make_chair(), make_bench(), make_window()],
             visible = False, lighting_conditions = standard_indoor_lighting, privacy_level = 2, darken = False)
 
@@ -63,6 +63,8 @@ label instantiate_map_locations():
             map_pos = [1,1], lighting_conditions = standard_outdoor_lighting, privacy_level = 3)
         downtown_bar = Room("bar", "The Downtown Distillery", bar_background, downtown_bar_objects, [downtown_bar_drink_action],
             map_pos = [2,1], visible = True, lighting_conditions = standard_indoor_lighting, privacy_level = 3, darken = False, accessible_func = downtown_bar_is_open)
+        downtown_bar_bathroom = Room("bar_bathroom", "Bar Bathroom", bar_bathroom_background, [make_wall(), make_floor(), make_toilet(), make_sink()],
+            visible = False, lighting_conditions = standard_indoor_lighting, privacy_level = 2, darken = False, allow_walk_in = True)
         downtown_hotel = Room("hotel_lobby", "The Hotel", hotel_background, downtown_hotel_lobby_objects,
             map_pos = [0,1], visible = True, lighting_conditions = standard_indoor_lighting, privacy_level = 3, darken = False)
         downtown_hotel_room = Room("hotel_room", "The Hotel Room", hotel_room_background, downtown_hotel_room_objects,
@@ -76,10 +78,12 @@ label instantiate_map_locations():
             map_pos = [0,2], lighting_conditions = standard_indoor_lighting, privacy_level = 3, accessible_func = mom_office_is_open)
         mom_offices = Room("mom_office", "Vandenberg\u00A0Ltd. Offices", marketing_background, [make_wall(), make_floor(), make_chair(), make_desk(), make_window()],
             visible = False, lighting_conditions = standard_indoor_lighting, privacy_level = 2, accessible_func = mom_office_is_open)
+        office_photocopy_room = Room("office_photocopy", "Office Copy Room", office_photocopy_background, [make_wall(), make_floor(), make_chair(), make_desk(), make_window()],
+            visible = False, lighting_conditions = standard_indoor_lighting, darken = False, allow_walk_in = True)
         hospital = Room("hospital", "Atrium Hospital", hospital_background, hospital_objects,
             map_pos = [2,2], lighting_conditions = standard_outdoor_lighting, privacy_level = 3)
         hospital_room = Room("hospital_room", "Hospital Room", hospital_room_background, hospital_room_objects,
-            visible = False, lighting_conditions = standard_indoor_lighting, darken = False)
+            visible = False, lighting_conditions = standard_indoor_lighting, darken = False, allow_walk_in = True)
 
         ## MALL ##
         mall = Room("mall", "Atrium", mall_background, [make_wall(), make_floor(), make_bench()],
@@ -99,19 +103,21 @@ label instantiate_map_locations():
             map_pos = [1,2], visible = False, lighting_conditions = standard_indoor_lighting, privacy_level = 3, accessible_func = gaming_cafe_is_open)
         gaming_cafe_store_room = Room("gaming_cafe_store_room", "Gaming Café", gaming_cafe_store_room_background, [make_floor(), make_wall(), make_door(), make_chair(), make_table()],
             map_pos = [0,0], visible = False, lighting_conditions = standard_indoor_lighting, privacy_level = 0, darken = False)
+        mall_bathroom = Room("mall_bathroom", "Mall Bathroom", mall_bathroom_background, [make_wall(), make_floor(), make_toilet(), make_sink()],
+            visible = False, lighting_conditions = standard_indoor_lighting, privacy_level = 2, darken = False, allow_walk_in = True)
 
 
         gym = Room("gym", "Gym", gym_background, [make_wall(), make_floor(), make_bench(), make_mirror()],
             map_pos = [1,1], lighting_conditions = standard_indoor_lighting, privacy_level = 3, accessible_func = gym_is_open, darken = False)
         gym_shower = Room("gym_shower", "Gym Shower", gym_shower_background, gym_shower_objects,
-            map_pos = [2,1], visible = False, lighting_conditions = standard_indoor_lighting, privacy_level = 1, accessible_func = gym_is_open)
+            map_pos = [2,1], visible = False, lighting_conditions = standard_indoor_lighting, privacy_level = 1, accessible_func = gym_is_open, allow_walk_in = True)
 
         sex_store = Room("sex_store", "Sex Store", sex_store_background, generic_store_objects,
             map_pos = [1,1], lighting_conditions = standard_indoor_lighting, privacy_level = 1, accessible_func = sex_shop_is_open)
 
         ## Mall supporting locations
         changing_room = Room("changing_room", "Changing Room", changing_room_background, changing_room_objects,
-            visible = False, lighting_conditions = standard_indoor_lighting, privacy_level = 1, accessible_func = mall_is_open)
+            visible = False, lighting_conditions = standard_indoor_lighting, privacy_level = 1, accessible_func = mall_is_open, allow_walk_in = True)
 
         ##Other Locations##
         aunt_apartment = Room("aunt_apartment", "Living Room", house_background, [make_floor(), make_wall(), make_couch(), make_table(), make_chair(), make_window()],
@@ -124,9 +130,11 @@ label instantiate_map_locations():
         university = Room("campus", "University Campus", campus_background, [make_grass(), make_bench()],
             map_pos = [1,1], visible = False, lighting_conditions = standard_outdoor_lighting, privacy_level = 2, accessible_func = university_is_open)
         university_library = Room("uni_library", "Library", university_library_background, [make_floor(), make_wall(), make_table(), make_chair(), make_couch()],
-            map_pos = [0,1], visible = False, lighting_conditions = standard_indoor_lighting, privacy_level = 1, accessible_func = university_is_open)
+            map_pos = [0,1], visible = False, lighting_conditions = standard_indoor_lighting, privacy_level = 1, accessible_func = university_is_open, allow_walk_in = True)
         university_study_room = Room("study_room", "Study Room", university_study_room_background, [make_floor(), make_wall(), make_chair(), make_table(), make_window()],
-            map_pos = [2,1], visible = False, lighting_conditions = standard_indoor_lighting, privacy_level = 1, accessible_func = university_is_open)
+            map_pos = [2,1], visible = False, lighting_conditions = standard_indoor_lighting, privacy_level = 1, accessible_func = university_is_open, allow_walk_in = True)
+        university_bathroom = Room("university_bathroom", "University Bathroom", university_bathroom_background, [make_wall(), make_floor(), make_toilet(), make_sink()],
+            visible = False, lighting_conditions = standard_indoor_lighting, privacy_level = 2, darken = False, allow_walk_in = True)
 
         strip_club_owner = Person.get_random_male_name()
 
@@ -135,6 +143,8 @@ label instantiate_map_locations():
             map_pos = [1,1], visible = False, lighting_conditions = standard_club_lighting, privacy_level = 1, accessible_func = strip_club_is_open, darken = False)
         bdsm_room = Room("bdsm_room", "BDSM\u00a0room", bdsm_room_background, bdsm_room_objects, [dungeon_room_appoint_slave_action],
             map_pos = [0,1], visible = False, lighting_conditions = standard_indoor_lighting, privacy_level = 1, accessible_func = strip_club_is_open, darken = False)
+        strip_club_dressing_room = Room("club_dressing_room", "Dressing Room", stripclub_dressing_room_background, [make_wall(), make_floor(), make_chair(), make_mirror(), make_door()],
+            visible = False, lighting_conditions = standard_indoor_lighting, privacy_level = 2, darken = False, allow_walk_in = True)
 
 
         police_station = Room("police_station", "Police Station", police_station_background, ceo_office_objects,
@@ -189,6 +199,7 @@ label instantiate_map_locations():
 
             downtown,
             downtown_bar,
+            downtown_bar_bathroom,
             downtown_hotel,
             downtown_hotel_room,
             fancy_restaurant,
@@ -208,6 +219,7 @@ label instantiate_map_locations():
             coffee_shop,
             gaming_cafe,
             gaming_cafe_store_room,
+            mall_bathroom,
 
             aunt_apartment,
             aunt_bedroom,
@@ -216,12 +228,15 @@ label instantiate_map_locations():
             university,
             university_library,
             university_study_room,
+            university_bathroom,
 
             strip_club,
             bdsm_room,
+            strip_club_dressing_room,
 
             mom_office_lobby,
             mom_offices,
+            office_photocopy_room,
 
             city_hall,
             police_station,
@@ -245,14 +260,14 @@ label instantiate_map_hubs():
         home_hub = MapHub("home", "Home", icon = "POI_House", position = Point(250, 475), locations = [hall, bedroom, lily_bedroom, mom_bedroom, kitchen, home_bathroom, dungeon, home_shower])
         aunt_home_hub = MapHub("aunt_home", "Rebecca's Apartment", icon = "POI_House", position = Point(150, 255), locations = [aunt_apartment,aunt_bedroom, cousin_bedroom])
         office_hub = MapHub("office", business_name, icon = "POI_Business", position = Point(1295, 365), locations = [lobby, m_division, p_division, rd_division, office, ceo_office, clone_facility, testing_room, work_bathroom, storage_room])
-        mall_hub = MapHub("mall", "Shopping Mall", icon = "POI_Mall", position = Point(640, 360), locations = [mall, home_store, clothing_store, electronics_store, office_store, mall_salon, gaming_cafe, gaming_cafe_store_room], accessible_func = mall_is_open)
+        mall_hub = MapHub("mall", "Shopping Mall", icon = "POI_Mall", position = Point(640, 360), locations = [mall, home_store, clothing_store, electronics_store, office_store, mall_salon, gaming_cafe, gaming_cafe_store_room, mall_bathroom], accessible_func = mall_is_open)
         sex_shop_hub = MapHub("sex_shop", "Starbuck's Sex\u00A0Shop", icon = "POI_Sexshop", position = Point(770, 120), locations = [sex_store], accessible_func = sex_shop_is_open)
-        downtown_hub = MapHub("downtown", "Downtown", icon = "POI_Downtown", position = Point(560, 800), locations = [mom_office_lobby, mom_offices, downtown_bar, coffee_shop, downtown, downtown_hotel, downtown_hotel_room, fancy_restaurant, hospital, hospital_room])
+        downtown_hub = MapHub("downtown", "Downtown", icon = "POI_Downtown", position = Point(560, 800), locations = [mom_office_lobby, mom_offices, downtown_bar, coffee_shop, downtown, downtown_hotel, downtown_hotel_room, fancy_restaurant, hospital, hospital_room, downtown_bar_bathroom, office_photocopy_room])
         plaza_hub = MapHub("plaza", "City Plaza", icon = "POI_Police", position = Point(500, 550), locations = [city_hall, police_station, police_jail])
         gym_hub = MapHub("gym", "Gym", icon = "POI_Gym", position = Point(890, 615), locations = [gym, gym_shower], accessible_func = gym_is_open)
-        university_hub = MapHub("university", "University", icon = "POI_Uni", position = Point(1165, 770), locations = [university, university_library, university_study_room], accessible_func = university_is_open)
+        university_hub = MapHub("university", "University", icon = "POI_Uni", position = Point(1165, 770), locations = [university, university_library, university_study_room, university_bathroom], accessible_func = university_is_open)
         harem_hub = MapHub("mansion", str(mansion_name), icon = "POI_Brothel", position = Point(120, 660), locations = [harem_mansion])
-        strip_club_hub = MapHub("stripclub", "Strip\u00A0Club", icon = "POI_Club", position = Point(800, 800), locations = [strip_club, bdsm_room], accessible_func = strip_club_is_open)
+        strip_club_hub = MapHub("stripclub", "Strip\u00A0Club", icon = "POI_Club", position = Point(800, 800), locations = [strip_club, bdsm_room, strip_club_dressing_room], accessible_func = strip_club_is_open)
 
         residential_home_hub = HomeHub("residential", "Residential District", icon = "District_Residential", position = Point(380, 190),
             people = [camila, salon_manager, starbuck, emily, sakari, kaya, naomi],
