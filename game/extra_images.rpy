@@ -1,98 +1,20 @@
 init -10:
     define mannequin_average = Image(get_file_handle("mannequin_average.png"))
 
-    define house_background = Image(get_file_handle("Home_Background.jpg"))
-    define apartment_background = Image(get_file_handle("Apartment_Lobby.png"))
-    define bedroom_background = Image(get_file_handle("Bedroom_Background.jpg"))
-    define home_bathroom_background = Image(get_file_handle("Home_Bathroom_Background.jpg"))
-    define old_home_shower_background = Image(get_file_handle("Home_Shower_Background_Old.jpg"))
-    define home_shower_background = Image(get_file_handle("Home_Shower_Background.jpg"))
-    define kitchen_background = Image(get_file_handle("Kitchen_Background.jpg"))
-    define laundry_room_background = Image(get_file_handle("Laundry_Room_Background.jpg"))
-    define her_hallway_background = Image(get_file_handle("her_hallway_background.jpg"))
-    define dungeon_background = Image(get_file_handle("Dungeon_Background.jpg"))
-    define harem_mansion_background = Image(get_file_handle("harem_mansion.jpg"))
-    define lily_bedroom_background = Image(get_file_handle("Lily_Bedroom_Background.jpg"))
-    define cousin_bedroom_background = Image(get_file_handle("Cousin_Bedroom_Background.jpg"))
-
-
-    define mall_background = Image(get_file_handle("Mall_Background.jpg"))
-    define electronics_store_background = Image(get_file_handle("Electronics_Store_Background.jpg"))
-    define home_improvement_store_background = Image(get_file_handle("Home_Improvement_Store_Background.jpg"))
-    define bathroom_background = Image(get_file_handle("Bathroom_Background.png"))
-    define sex_store_background = Image(get_file_handle("Sex_Shop_Background.jpg"))
-    define gym_background = Image(get_file_handle("Gym_Background.jpg"))
-    define gym_shower_background = Image(get_file_handle("Gym_Shower_Background.jpg"))
-    define clothing_store_background =  Image(get_file_handle("Clothing_Store_Background.jpg"))
-    define changing_room_background = Image(get_file_handle("Changing_Room_Background.jpg"))
-    define office_store_background = Image(get_file_handle("Office_Store_Background.jpg"))
-    define salon_background = Image(get_file_handle("Salon_Background.jpg"))
-    define coffee_shop_background = Image(get_file_handle("Coffee_Shop_Background.jpg"))
-    define gaming_cafe_background = Image(get_file_handle("Internet_Cafe_Background.jpg"))
-    define gaming_cafe_store_room_background = Image(get_file_handle("Internet_Cafe_Store_Room_Background.jpg"))
-    define mall_bathroom_background = Image(get_file_handle("Mall_Bathroom_Background.jpg"))
-    define office_photocopy_background = Image(get_file_handle("Office_PhotoCopy_Background.jpg"))
-
-    define ceo_office_background = Image(get_file_handle("CEO_Office_Background.jpg"))
-    define lab_background = Image(get_file_handle("Lab_Background.png"))
-    define office_background = Image(get_file_handle("Main_Office_Background.jpg"))
-    define marketing_background = Image(get_file_handle("Marketing_Background.jpg"))
-    define production_background = Image(get_file_handle("Production_Background.jpg"))
-    define research_background = Image(get_file_handle("RandD_Background.jpg"))
-    define lobby_background = Image(get_file_handle("Office_Lobby_Background.jpg"))
-    define biotech_background = Image(get_file_handle("Biotech_Background.jpg"))
-    define testing_room_background = Image(get_file_handle("Testing_Room_Background.jpg"))
-    define clone_facility_background = Image(get_file_handle("Cloning_Facility_Background.jpg"))
-    define storage_room_background = Image(get_file_handle("Storage_Room_Background.jpg"))
-    define break_room_background = Image(get_file_handle("Break_Room_Background.jpg"))
-
-    define luxury_apartment_background = Image(get_file_handle("Luxury_Apartment_Background.jpg"))
-    define outside_background = Image(get_file_handle("Outside_Background.png"))
-
-    define police_station_background = Image(get_file_handle("Police_Station_Background.jpg"))
-    define police_jail_background = Image(get_file_handle("Police_Jail_Background.jpg"))
-
-    define bar_background = Image(get_file_handle("Bar_Background.png"))
-    define bar_bathroom_background = Image(get_file_handle("Bar_Bathroom_Background.jpg"))
-    define stripclub_background = Image(get_file_handle("Club_Background.jpg"))
-    define stripclub_dressing_room_background = Image(get_file_handle("Club_Dressing_Room_Background.jpg"))
-    define bdsm_room_background = Image(get_file_handle("BDSM_Room_Background.jpg"))
-    define hotel_background = Image(get_file_handle("Hotel_Lobby_Background.jpg"))
-    define hotel_room_background = Image(get_file_handle("Hotel_Room_Background.jpg"))
-    define hospital_background = Image(get_file_handle("Hospital_Background.jpg"))
-    define hospital_room_background = Image(get_file_handle("Hospital_Room_Background.jpg"))
-
-    define campus_background = Image(get_file_handle("Campus_Background.jpg"))
-    define university_library_background = Image(get_file_handle("University_Library_Background.jpg"))
-    define university_study_room_background = Image(get_file_handle("Study_Room_Background.jpg"))
-    define university_bathroom_background = Image(get_file_handle("University_Bathroom_Background.jpg"))
-    define student_apartment_background = Image(get_file_handle("student_apartment_background.jpg"))
-
-    define restaurant_background = Image(get_file_handle("Restaurant_Background.png"))
-    define fancy_restaurant_background = Image(get_file_handle("Fancy_Restaurant_Background.jpg"))
-    define theatre_background = Image(get_file_handle("Theatre_Background.png"))
-    define concert_hall_background = Image(get_file_handle("Concert_Hall_Background.jpg"))
-
-    define standard_bedroom1_background = Image(get_file_handle("Generic_Bedroom1_Background.jpg"))
-    define standard_bedroom2_background = Image(get_file_handle("Generic_Bedroom2_Background.jpg"))
-    define standard_bedroom3_background = Image(get_file_handle("Generic_Bedroom3_Background.jpg"))
-    define standard_bedroom4_background = Image(get_file_handle("Generic_Bedroom4_Background.jpg"))
-    define prostitute_bedroom_background = Image(get_file_handle("Prostitute_Bedroom_Background.jpg"))
-
     image bg science_menu_background = science_menu_background_image
     image bg paper_menu_background = paper_background_image
 
-    image information_mark = "[information_image.filename]"
     image serum_vial = "[vial_image.filename]"
     image serum_vial2 = "[vial2_image.filename]"
     image serum_vial3 = "[vial3_image.filename]"
     image feeding_bottle = "[feeding_bottle_image.filename]"
     image fertile = "[fertile_image.filename]"
-    image question_mark = "[question_image.filename]"
     image dna_sequence = "[dna_image.filename]"
     image home_marker = "[home_image.filename]"
     image stocking_marker = "[stocking_image.filename]"
     image doggy_style_marker = "[doggy_style_image.filename]"
+    image question_mark = "[question_image.filename]"
+    image information_mark = "[information_image.filename]"
     image virgin_image_marker = "[virgin_image.filename]"
     image birthcontrol = "[bc_image.filename]"
     image bc_cum = "[bc_cum_image.filename]"
