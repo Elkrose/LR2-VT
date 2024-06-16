@@ -115,7 +115,6 @@ town_relationships = RelationshipArray()
 character_right = None
 clothing_fade = None
 fast_clothing_fade = None
-house_background = Image("")
 
 # proxy methods for type system
 
@@ -1762,7 +1761,7 @@ class Person(): #Everything that needs to be known about a person.
         # when we cannot find self._home in list of places
         start_home = next((x for x in list_of_places if x.identifier == self._home), None)
         if force_new_home or not start_home:
-            start_home = Room(f"{self.name} {self.last_name}", f"{self.name} {self.last_name}", house_background, [make_wall(), make_floor(), make_couch(), make_window()], [], False, [0.5, 0.5], visible = False, hide_in_known_house_map = False, lighting_conditions = standard_indoor_lighting)
+            start_home = Room(f"{self.name} {self.last_name}", f"{self.name} {self.last_name}", "Home_Background", [make_wall(), make_floor(), make_couch(), make_window()], [], False, [0.5, 0.5], visible = False, hide_in_known_house_map = False, lighting_conditions = standard_indoor_lighting)
 
         # add home location to list of places, before assignment
         if start_home not in list_of_places:

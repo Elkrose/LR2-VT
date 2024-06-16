@@ -2,215 +2,215 @@ label instantiate_map_locations():
     python:
         ##PC's Home##
         mansion_name = str(last_name)+" Mansion"
-        hall = Room("home_hall", "Living Room", house_background, [make_floor(), make_wall(), make_front_door()],
+        hall = Room("home_hall", "Living Room", "Home_Background", [make_floor(), make_wall(), make_front_door()],
             map_pos = [1,1], lighting_conditions = standard_indoor_lighting)
-        bedroom = Room("mc_bedroom", "Your Bedroom", bedroom_background, bedroom_objects,
+        bedroom = Room("mc_bedroom", "Your Bedroom", "Bedroom_Background", bedroom_objects,
             actions = [sleep_action, bedroom_masturbate_action],
             map_pos = [1,0], lighting_conditions = standard_indoor_lighting)
-        lily_bedroom = Room("lily_bedroom", "Lily's Bedroom", bedroom_background,bedroom_objects,
+        lily_bedroom = Room("lily_bedroom", "Lily's Bedroom", "Bedroom_Background", bedroom_objects,
             map_pos = [0,1], lighting_conditions = standard_indoor_lighting)
-        mom_bedroom = Room("mom_bedroom", "Mom's Bedroom", bedroom_background, bedroom_objects,
+        mom_bedroom = Room("mom_bedroom", "Mom's Bedroom", "Bedroom_Background", bedroom_objects,
             actions = [mom_room_search_action],
             map_pos = [0,2], lighting_conditions = standard_indoor_lighting)
-        kitchen = Room("kitchen", "Kitchen", kitchen_background, [make_wall, make_floor(), make_chair(), make_table()],
+        kitchen = Room("kitchen", "Kitchen", "Kitchen_Background", [make_wall, make_floor(), make_chair(), make_table()],
             map_pos = [1,2], lighting_conditions = standard_indoor_lighting)
-        home_bathroom = Room("bathroom", "Bathroom", home_bathroom_background, home_shower_objects,
+        home_bathroom = Room("bathroom", "Bathroom", "Home_Bathroom_Background", home_shower_objects,
             visible = False, darken = False)
-        home_shower = Room("home_shower", "Home Shower", old_home_shower_background, home_shower_objects,
+        home_shower = Room("home_shower", "Home Shower", "Home_Shower_Background_Old", home_shower_objects,
             visible = False, lighting_conditions = standard_indoor_lighting)
-        her_hallway = Room("her_hallway", "Front hall", her_hallway_background, [make_floor(), make_wall(), make_front_door(), make_hall_carpet(), make_stairs()],
+        her_hallway = Room("her_hallway", "Front hall", "her_hallway_background", [make_floor(), make_wall(), make_front_door(), make_hall_carpet(), make_stairs()],
             visible = False, lighting_conditions = standard_indoor_lighting)
-        laundry_room = Room("laundry_room", "Laundry Room", laundry_room_background, laundry_room_objects,
+        laundry_room = Room("laundry_room", "Laundry Room", "Laundry_Room_Background", laundry_room_objects,
             visible = False, lighting_conditions = standard_indoor_lighting)
-        dungeon = Room("dungeon", "Dungeon", dungeon_background, dungeon_objects, [dungeon_room_appoint_slave_action],
+        dungeon = Room("dungeon", "Dungeon", "Dungeon_Background", dungeon_objects, [dungeon_room_appoint_slave_action],
             map_pos = [2,1], visible = False, lighting_conditions = standard_indoor_lighting, darken = False)
 
-        harem_mansion = Room("harem_mansion", str(mansion_name), harem_mansion_background, harem_objects,
+        harem_mansion = Room("harem_mansion", str(mansion_name),"harem_mansion", harem_objects,
             map_pos =[1, 1], visible = False, lighting_conditions = standard_indoor_lighting)
 
         ##PC's Work##
-        ceo_office = Room("ceo_office", "CEO Office", ceo_office_background, ceo_office_objects,
+        ceo_office = Room("ceo_office", "CEO Office", "CEO_Office_Background", ceo_office_objects,
             actions = [policy_purchase_action, set_uniform_action, set_serum_action],
             map_pos = [1,0], lighting_conditions = standard_indoor_lighting,
             privacy_level = 2, allow_walk_in = True)
-        lobby = Room("lobby", "Lobby", lobby_background, [make_floor(), make_wall(), make_reception(), make_chair(), make_front_door(), make_window()],
+        lobby = Room("lobby", "Lobby", "Office_Lobby_Background", [make_floor(), make_wall(), make_reception(), make_chair(), make_front_door(), make_window()],
             map_pos = [1,1], tutorial_label = "lobby_tutorial_intro", lighting_conditions = standard_indoor_lighting,
             privacy_level = 2)
-        office = Room("main_office", "Main Offices", office_background, [make_floor(), make_desk(), make_window(), make_chair(), make_wall()],
+        office = Room("main_office", "Main Offices", "Main_Office_Background", [make_floor(), make_desk(), make_window(), make_chair(), make_wall()],
             actions = [hr_work_action,supplies_work_action,interview_action,pick_supply_goal_action],
             map_pos = [0,1], tutorial_label = "office_tutorial_intro", lighting_conditions = standard_indoor_lighting,
             privacy_level = 2)
-        m_division = Room("market_div", "Marketing Division", marketing_background, [make_floor(), make_desk(), make_window(), make_chair(), make_wall()],
+        m_division = Room("market_div", "Marketing Division", "Marketing_Background", [make_floor(), make_desk(), make_window(), make_chair(), make_wall()],
             actions = [sell_serum_action, market_work_action,set_company_model_action],
             map_pos = [2,1], tutorial_label = "marketing_tutorial_intro", lighting_conditions = standard_indoor_lighting,
             privacy_level = 2)
-        rd_division = Room("rd_div", "R&D Division", research_background, [make_floor(), make_desk(), make_window(), make_chair(), make_wall(), make_examtable()],
+        rd_division = Room("rd_div", "R&D Division", "RandD_Background", [make_floor(), make_desk(), make_window(), make_chair(), make_wall(), make_examtable()],
             actions = [research_work_action,design_serum_action,pick_research_action,review_designs_action,set_head_researcher_action],
             map_pos = [2,2], tutorial_label = "research_tutorial_intro", lighting_conditions = standard_indoor_lighting,
             privacy_level = 2)
-        p_division = Room("prod_div", "Production Division", production_background, [make_floor(), make_desk(), make_window(), make_chair(), make_wall()],
+        p_division = Room("prod_div", "Production Division", "Production_Background", [make_floor(), make_desk(), make_window(), make_chair(), make_wall()],
             actions = [production_work_action,pick_production_action,trade_serum_action],
             map_pos = [0,2], tutorial_label = "production_tutorial_intro", lighting_conditions = standard_indoor_lighting,
             privacy_level = 2)
-        clone_facility = Room("clone_facility", "Cloning Facility", clone_facility_background, [make_floor(), make_desk(), make_chair(), make_wall()],
+        clone_facility = Room("clone_facility", "Cloning Facility", "Cloning_Facility_Background", [make_floor(), make_desk(), make_chair(), make_wall()],
             map_pos = [1,2], visible = False, lighting_conditions = standard_indoor_lighting,
             privacy_level = 2, darken = False)
-        work_bathroom = Room("work_bathroom", "Work Bathroom", bathroom_background, [make_wall(), make_floor(), make_toilet(), make_sink()],
+        work_bathroom = Room("work_bathroom", "Work Bathroom", "Bathroom_Background", [make_wall(), make_floor(), make_toilet(), make_sink()],
             visible = False, lighting_conditions = standard_indoor_lighting,
             privacy_level = 2, darken = False, allow_walk_in = True)
-        testing_room = Room("testing_room", "Test Room", testing_room_background, [make_floor(), make_wall(), make_medical_table(), make_mirror()],
+        testing_room = Room("testing_room", "Test Room", "Testing_Room_Background", [make_floor(), make_wall(), make_medical_table(), make_mirror()],
             visible = False, lighting_conditions = standard_indoor_lighting,
             privacy_level = 2, darken = False)
-        storage_room = Room("storage_room", "Storage Room", storage_room_background, [make_floor(), make_wall(), make_door()],
+        storage_room = Room("storage_room", "Storage Room", "Storage_Room_Background", [make_floor(), make_wall(), make_door()],
             visible = False, lighting_conditions = standard_indoor_lighting,
             privacy_level = 2, darken = False, allow_walk_in = True)
-        break_room = Room("break_room", "Break Room", break_room_background, [make_floor(), make_wall(), make_table(), make_chair(), make_bench(), make_window()],
+        break_room = Room("break_room", "Break Room", "Break_Room_Background", [make_floor(), make_wall(), make_table(), make_chair(), make_bench(), make_window()],
             visible = False, lighting_conditions = standard_indoor_lighting,
             privacy_level = 2, darken = False)
 
         ## Downtown ##
-        downtown = Room("downtown", "Downtown Streets", outside_background, [make_floor(), make_bench(), make_alley()],
+        downtown = Room("downtown", "Downtown Streets", "Outside_Background", [make_floor(), make_bench(), make_alley()],
             actions = [downtown_search_action],
             map_pos = [1,1], lighting_conditions = standard_outdoor_lighting,
             privacy_level = 3)
-        downtown_bar = Room("bar", "The Downtown Distillery", bar_background, downtown_bar_objects, [downtown_bar_drink_action],
+        downtown_bar = Room("bar", "The Downtown Distillery", "Bar_Background", downtown_bar_objects, [downtown_bar_drink_action],
             map_pos = [2,1], visible = True, lighting_conditions = standard_indoor_lighting,
             privacy_level = 3, accessible_func = downtown_bar_is_open, darken = False)
-        downtown_bar_bathroom = Room("bar_bathroom", "Bar Bathroom", bar_bathroom_background, [make_wall(), make_floor(), make_toilet(), make_sink()],
+        downtown_bar_bathroom = Room("bar_bathroom", "Bar Bathroom", "Bar_Bathroom_Background", [make_wall(), make_floor(), make_toilet(), make_sink()],
             visible = False, lighting_conditions = standard_indoor_lighting,
             privacy_level = 2, accessible_func = downtown_bar_is_open, darken = False, allow_walk_in = True)
-        downtown_hotel = Room("hotel_lobby", "The Hotel", hotel_background, downtown_hotel_lobby_objects,
+        downtown_hotel = Room("hotel_lobby", "The Hotel", "Hotel_Lobby_Background", downtown_hotel_lobby_objects,
             map_pos = [0,1], visible = True, lighting_conditions = standard_indoor_lighting,
             privacy_level = 3, darken = False)
-        downtown_hotel_room = Room("hotel_room", "The Hotel Room", hotel_room_background, downtown_hotel_room_objects,
+        downtown_hotel_room = Room("hotel_room", "The Hotel Room", "Hotel_Room_Background", downtown_hotel_room_objects,
             visible = False, lighting_conditions = standard_indoor_lighting,
             privacy_level = 2, darken = False)
-        fancy_restaurant = Room("fancy_restaurant", "Restaurant", fancy_restaurant_background, [make_floor(), make_chair(), make_table()],
+        fancy_restaurant = Room("fancy_restaurant", "Restaurant", "Fancy_Restaurant_Background", [make_floor(), make_chair(), make_table()],
             visible = False, lighting_conditions = standard_indoor_lighting,
             privacy_level = 3, darken = False)
-        coffee_shop = Room("coffee_shop", "Coffee Shop", coffee_shop_background, coffee_shop_objects, [coffee_shop_get_coffee_action],
+        coffee_shop = Room("coffee_shop", "Coffee Shop", "Coffee_Shop_Background", coffee_shop_objects, [coffee_shop_get_coffee_action],
             map_pos = [1,0], visible = True, lighting_conditions = standard_indoor_lighting,
             privacy_level = 3, accessible_func = coffee_shop_is_open)
-        mom_office_lobby = Room("mom_office_lobby", "Vandenberg\u00A0Ltd. Lobby", lobby_background, [make_wall(), make_floor(), make_chair(), make_reception(), make_window()],
+        mom_office_lobby = Room("mom_office_lobby", "Vandenberg\u00A0Ltd. Lobby", "Office_Lobby_Background", [make_wall(), make_floor(), make_chair(), make_reception(), make_window()],
             actions = [mom_office_person_request_action],
             map_pos = [0,2], lighting_conditions = standard_indoor_lighting,
             privacy_level = 3, accessible_func = mom_office_is_open)
-        mom_offices = Room("mom_office", "Vandenberg\u00A0Ltd. Offices", marketing_background, [make_wall(), make_floor(), make_chair(), make_desk(), make_window()],
+        mom_offices = Room("mom_office", "Vandenberg\u00A0Ltd. Offices", "Marketing_Background", [make_wall(), make_floor(), make_chair(), make_desk(), make_window()],
             visible = False, lighting_conditions = standard_indoor_lighting,
             privacy_level = 2, accessible_func = mom_office_is_open)
-        office_photocopy_room = Room("office_photocopy", "Office Copy Room", office_photocopy_background, [make_wall(), make_floor(), make_chair(), make_desk(), make_window()],
+        office_photocopy_room = Room("office_photocopy", "Office Copy Room", "Office_PhotoCopy_Background", [make_wall(), make_floor(), make_chair(), make_desk(), make_window()],
             visible = False, lighting_conditions = standard_indoor_lighting,
             privacy_level = 2, accessible_func = mom_office_is_open, darken = False, allow_walk_in = True)
-        hospital = Room("hospital", "Atrium Hospital", hospital_background, hospital_objects,
+        hospital = Room("hospital", "Atrium Hospital", "Hospital_Background", hospital_objects,
             map_pos = [2,2], lighting_conditions = standard_outdoor_lighting,
             privacy_level = 3)
-        hospital_room = Room("hospital_room", "Hospital Room", hospital_room_background, hospital_room_objects,
+        hospital_room = Room("hospital_room", "Hospital Room", "Hospital_Room_Background", hospital_room_objects,
             visible = False, lighting_conditions = standard_indoor_lighting,
             privacy_level = 2, darken = False, allow_walk_in = True)
 
         ## MALL ##
-        mall = Room("mall", "Atrium", mall_background, [make_wall(), make_floor(), make_bench()],
+        mall = Room("mall", "Atrium", "Mall_Background", [make_wall(), make_floor(), make_bench()],
             map_pos = [1,1], lighting_conditions = standard_indoor_lighting,
             privacy_level = 3, accessible_func = mall_is_open)
-        home_store = Room("home_store", "Home Improvement Store", home_improvement_store_background, generic_store_objects,
+        home_store = Room("home_store", "Home Improvement Store", "Home_Improvement_Store_Background", generic_store_objects,
             map_pos = [1,0], lighting_conditions = standard_indoor_lighting,
             privacy_level = 3, accessible_func = mall_is_open)
-        clothing_store = Room("clothing_store", "Sak's Clothing Store", clothing_store_background, clothing_store_objects,
+        clothing_store = Room("clothing_store", "Sak's Clothing Store", "Clothing_Store_Background", clothing_store_objects,
             map_pos = [2,2], lighting_conditions = standard_indoor_lighting,
             privacy_level = 3, accessible_func = mall_is_open)
-        office_store = Room("supply_store", "Office Supply Store", office_store_background, generic_store_objects,
+        office_store = Room("supply_store", "Office Supply Store", "Office_Store_Background", generic_store_objects,
             map_pos = [2,1], lighting_conditions = standard_indoor_lighting,
             privacy_level = 3, accessible_func = mall_is_open)
-        electronics_store = Room("electronics_store", "Electronics Store", electronics_store_background, generic_store_objects,
+        electronics_store = Room("electronics_store", "Electronics Store", "Electronics_Store_Background", generic_store_objects,
             map_pos = [0,1], lighting_conditions = standard_indoor_lighting,
             privacy_level = 3, accessible_func = mall_is_open)
-        mall_salon = Room("salon", "Hair Salon", salon_background, hair_salon_objects,
+        mall_salon = Room("salon", "Hair Salon", "Salon_Background", hair_salon_objects,
             map_pos = [0,2], visible = True, lighting_conditions = standard_indoor_lighting,
             privacy_level = 3, accessible_func = hair_salon_is_open)
-        gaming_cafe = Room("gaming_cafe", "Gaming Café", gaming_cafe_background, gaming_cafe_objects,
+        gaming_cafe = Room("gaming_cafe", "Gaming Café", "Internet_Cafe_Background", gaming_cafe_objects,
             actions = [gaming_cafe_grind_character_action, gaming_cafe_buy_max_level_token_action, gaming_cafe_adult_swim],
             map_pos = [1,2], visible = False, lighting_conditions = standard_indoor_lighting,
             privacy_level = 3, accessible_func = gaming_cafe_is_open)
-        gaming_cafe_store_room = Room("gaming_cafe_store_room", "Gaming Café", gaming_cafe_store_room_background, [make_floor(), make_wall(), make_door(), make_chair(), make_table()],
+        gaming_cafe_store_room = Room("gaming_cafe_store_room", "Gaming Café", "Internet_Cafe_Store_Room_Background", [make_floor(), make_wall(), make_door(), make_chair(), make_table()],
             map_pos = [0,0], visible = False, lighting_conditions = standard_indoor_lighting,
             privacy_level = 2, darken = False)
-        mall_bathroom = Room("mall_bathroom", "Mall Bathroom", mall_bathroom_background, [make_wall(), make_floor(), make_toilet(), make_sink()],
+        mall_bathroom = Room("mall_bathroom", "Mall Bathroom", "Mall_Bathroom_Background", [make_wall(), make_floor(), make_toilet(), make_sink()],
             visible = False, lighting_conditions = standard_indoor_lighting,
             privacy_level = 2, darken = False, allow_walk_in = True)
 
 
-        gym = Room("gym", "Gym", gym_background, [make_wall(), make_floor(), make_bench(), make_mirror()],
+        gym = Room("gym", "Gym", "Gym_Background", [make_wall(), make_floor(), make_bench(), make_mirror()],
             map_pos = [1,1], lighting_conditions = standard_indoor_lighting,
             privacy_level = 3, accessible_func = gym_is_open, darken = False)
-        gym_shower = Room("gym_shower", "Gym Shower", gym_shower_background, gym_shower_objects,
+        gym_shower = Room("gym_shower", "Gym Shower", "Gym_Shower_Background", gym_shower_objects,
             map_pos = [2,1], visible = False, lighting_conditions = standard_indoor_lighting,
             privacy_level = 1, accessible_func = gym_is_open, allow_walk_in = True)
 
-        sex_store = Room("sex_store", "Sex Store", sex_store_background, generic_store_objects,
+        sex_store = Room("sex_store", "Sex Store", "Sex_Shop_Background", generic_store_objects,
             map_pos = [1,1], lighting_conditions = standard_indoor_lighting,
             privacy_level = 1, accessible_func = sex_shop_is_open)
 
         ## Mall supporting locations
-        changing_room = Room("changing_room", "Changing Room", changing_room_background, changing_room_objects,
+        changing_room = Room("changing_room", "Changing Room", "Changing_Room_Background", changing_room_objects,
             visible = False, lighting_conditions = standard_indoor_lighting,
             privacy_level = 1, accessible_func = mall_is_open, allow_walk_in = True)
 
         ##Other Locations##
-        aunt_apartment = Room("aunt_apartment", "Living Room", house_background, [make_floor(), make_wall(), make_couch(), make_table(), make_chair(), make_window()],
+        aunt_apartment = Room("aunt_apartment", "Living Room", "Home_Background", [make_floor(), make_wall(), make_couch(), make_table(), make_chair(), make_window()],
             map_pos = [1,1], visible = False, lighting_conditions = standard_indoor_lighting)
-        aunt_bedroom = Room("aunt_bedroom", "Rebecca's Bedroom", standard_bedroom4_background, bedroom_objects,
+        aunt_bedroom = Room("aunt_bedroom", "Rebecca's Bedroom", "Generic_Bedroom4_Background", bedroom_objects,
             map_pos = [2,1],visible = False, lighting_conditions = standard_indoor_lighting)
-        cousin_bedroom = Room("cousin_bedroom", "Gabrielle's Bedroom", cousin_bedroom_background, bedroom_objects,
+        cousin_bedroom = Room("cousin_bedroom", "Gabrielle's Bedroom", "Cousin_Bedroom_Background", bedroom_objects,
             map_pos = [2,2], visible = False, lighting_conditions = standard_indoor_lighting, darken = False)
 
-        university = Room("campus", "University Campus", campus_background, [make_grass(), make_bench()],
+        university = Room("campus", "University Campus", "Campus_Background", [make_grass(), make_bench()],
             map_pos = [1,1], visible = False, lighting_conditions = standard_outdoor_lighting,
             privacy_level = 1, accessible_func = university_is_open)
-        university_library = Room("uni_library", "Library", university_library_background, [make_floor(), make_wall(), make_table(), make_chair(), make_couch()],
+        university_library = Room("uni_library", "Library", "University_Library_Background", [make_floor(), make_wall(), make_table(), make_chair(), make_couch()],
             map_pos = [0,1], visible = False, lighting_conditions = standard_indoor_lighting,
             privacy_level = 1, accessible_func = university_is_open, allow_walk_in = True)
-        university_study_room = Room("study_room", "Study Room", university_study_room_background, [make_floor(), make_wall(), make_chair(), make_table(), make_window()],
+        university_study_room = Room("study_room", "Study Room", "Study_Room_Background", [make_floor(), make_wall(), make_chair(), make_table(), make_window()],
             map_pos = [2,1], visible = False, lighting_conditions = standard_indoor_lighting,
             privacy_level = 1, accessible_func = university_is_open, allow_walk_in = True)
-        university_bathroom = Room("university_bathroom", "University Bathroom", university_bathroom_background, [make_wall(), make_floor(), make_toilet(), make_sink()],
+        university_bathroom = Room("university_bathroom", "University Bathroom", "University_Bathroom_Background", [make_wall(), make_floor(), make_toilet(), make_sink()],
             visible = False, lighting_conditions = standard_indoor_lighting,
             privacy_level = 2, accessible_func = university_is_open, darken = False, allow_walk_in = True)
 
-        strip_club = Room("strip_club", "Gentlemen's Club", stripclub_background, [make_wall(), make_floor(), make_table(), make_chair(), make_stage(), make_pole()],
+        strip_club = Room("strip_club", "Gentlemen's Club", "Club_Background", [make_wall(), make_floor(), make_table(), make_chair(), make_stage(), make_pole()],
             actions = [strip_club_show_action, strip_club_set_uniforms_action],
             map_pos = [1,1], visible = False, lighting_conditions = standard_club_lighting,
             privacy_level = 1, accessible_func = strip_club_is_open, darken = False)
-        bdsm_room = Room("bdsm_room", "BDSM\u00a0room", bdsm_room_background, bdsm_room_objects, [dungeon_room_appoint_slave_action],
+        bdsm_room = Room("bdsm_room", "BDSM\u00a0room", "BDSM_Room_Background", bdsm_room_objects, [dungeon_room_appoint_slave_action],
             map_pos = [0,1], visible = False, lighting_conditions = standard_indoor_lighting,
             privacy_level = 1, accessible_func = strip_club_is_open, darken = False)
-        strip_club_dressing_room = Room("club_dressing_room", "Dressing Room", stripclub_dressing_room_background, [make_wall(), make_floor(), make_chair(), make_mirror(), make_door()],
+        strip_club_dressing_room = Room("club_dressing_room", "Dressing Room", "Club_Dressing_Room_Background", [make_wall(), make_floor(), make_chair(), make_mirror(), make_door()],
             visible = False, lighting_conditions = standard_indoor_lighting,
             privacy_level = 2, accessible_func = strip_club_is_open, darken = False, allow_walk_in = True)
 
-        police_station = Room("police_station", "Police Station", police_station_background, ceo_office_objects,
+        police_station = Room("police_station", "Police Station", "Police_Station_Background", ceo_office_objects,
             map_pos = [0,1], visible = False, lighting_conditions = standard_indoor_lighting,
             privacy_level = 3, darken = False)
-        police_jail = Room("police_jail", "Police Jail", police_jail_background, police_jail_objects,
+        police_jail = Room("police_jail", "Police Jail", "Police_Jail_Background", police_jail_objects,
             visible = False, lighting_conditions = standard_indoor_lighting,
             privacy_level = 2, darken = False)
 
-        city_hall = Room("city_hall", "City Hall", outside_background, [make_wall(), make_floor(), make_chair(), make_reception(), make_window()],
+        city_hall = Room("city_hall", "City Hall", "Outside_Background", [make_wall(), make_floor(), make_chair(), make_reception(), make_window()],
             map_pos = [1,1], visible = False, lighting_conditions = standard_indoor_lighting,
             privacy_level = 3)
 
         # NOTE: People will not auto-leave purgatory -> to get her back in the game you need to change her location
-        purgatory = Room("purgatory", "Hospital", outside_background, purgatory_objects,
+        purgatory = Room("purgatory", "Hospital", "Hospital_Background", purgatory_objects,
             visible = False, lighting_conditions = standard_indoor_lighting)
 
-        prostitute_bedroom = Room("Prostitute Bedroom", "Prostitute Bedroom", prostitute_bedroom_background, bedroom_objects + [make_love_rug],
+        prostitute_bedroom = Room("Prostitute Bedroom", "Prostitute Bedroom", "Prostitute_Bedroom_Background", bedroom_objects + [make_love_rug],
             visible = False, lighting_conditions = standard_indoor_lighting)
-        generic_bedroom_1 = Room("Generic Bedroom 1", "Bedroom", standard_bedroom1_background, bedroom_objects,
+        generic_bedroom_1 = Room("Generic Bedroom 1", "Bedroom", "Generic_Bedroom1_Background", bedroom_objects,
             visible = False, lighting_conditions = standard_indoor_lighting)
-        generic_bedroom_2 = Room("Generic Bedroom 2", "Bedroom", standard_bedroom2_background, bedroom_objects,
+        generic_bedroom_2 = Room("Generic Bedroom 2", "Bedroom", "Generic_Bedroom2_Background", bedroom_objects,
             visible = False, lighting_conditions = standard_indoor_lighting)
-        generic_bedroom_3 = Room("Generic Bedroom 3", "Bedroom", standard_bedroom3_background, bedroom_objects,
+        generic_bedroom_3 = Room("Generic Bedroom 3", "Bedroom", "Generic_Bedroom3_Background", bedroom_objects,
             visible = False, lighting_conditions = standard_indoor_lighting)
-        generic_bedroom_4 = Room("Generic Bedroom 4", "Bedroom", standard_bedroom4_background, bedroom_objects,
+        generic_bedroom_4 = Room("Generic Bedroom 4", "Bedroom", "Generic_Bedroom4_Background", bedroom_objects,
             visible = False, lighting_conditions = standard_indoor_lighting)
 
 
