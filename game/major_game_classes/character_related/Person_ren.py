@@ -2033,7 +2033,7 @@ class Person(): #Everything that needs to be known about a person.
             if not (self.has_role(college_intern_role) or self.has_job((nora_professor_job, university_professor_job, student_job, sister_student_job))):
                 exclude_list.extend(university_hub.locations)
             if not (self.has_job((secretary_job, office_worker_job, lawyer_job, architect_job, interior_decorator_job, fashion_designer_job))):
-                exclude_list.extend((mom_office_lobby, mom_offices))
+                exclude_list.append(mom_office_lobby)
 
             destination = get_random_from_list([x for x in list_of_places if (x.is_public and x.is_accessible and x not in exclude_list) or x == self.home])
 
