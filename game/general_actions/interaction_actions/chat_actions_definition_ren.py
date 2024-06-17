@@ -337,7 +337,7 @@ command_actions = ActionList([
 
 def sort_display_list(the_item): #Function to use when sorting lists of actions (and potentially people or strings)
     extra_args = None
-    if isinstance(the_item, list): #If it's a list it's actually an item of some sort with extra args. Break those out and continue.
+    if isinstance(the_item, (list, tuple, set)): #If it's a list it's actually an item of some sort with extra args. Break those out and continue.
         extra_args = the_item[1]
         the_item = the_item[0]
 
