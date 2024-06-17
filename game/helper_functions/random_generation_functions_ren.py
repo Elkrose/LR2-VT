@@ -1,6 +1,7 @@
 from __future__ import annotations
 import builtins
 import copy
+from typing import Iterable
 import renpy
 from math import floor
 from renpy import persistent, basestring
@@ -36,7 +37,7 @@ def make_person(name = None, name_list = None, last_name = None, last_name_list 
         sex_cap=7, hymen = None, vaginal_virgin = 0, anal_virgin = 0, oral_virgin = 0, vaginal_first = None, anal_first = None, oral_first = None,
         suggestibility = None, suggestibility_range = None, work_experience = None, work_experience_range = None,
         tan_style = None, serum_tolerance = None,
-        forced_opinions = None, forced_sexy_opinions = None, type = 'random', allow_premade = False) -> Person:
+        forced_opinions: Iterable[tuple[str, int, bool]] = None, forced_sexy_opinions: Iterable[tuple[str, int, bool]] = None, type = 'random', allow_premade = False) -> Person:
 
     return_character = None
     if type == "random" and allow_premade and renpy.random.randint(1, 100) < 20:
@@ -53,11 +54,11 @@ def make_person(name = None, name_list = None, last_name = None, last_name_list 
             suggestibility = suggestibility, suggestibility_range = suggestibility_range, work_experience = work_experience, work_experience_range = work_experience_range, type = type)
 
     # apply forced opinions after we 'update opinions', so we don't override them there
-    if forced_opinions and isinstance(forced_opinions, list):
+    if forced_opinions and isinstance(forced_opinions, (list, tuple, set)):
         for opinion in forced_opinions:
             return_character.opinions[opinion[0]] = [opinion[1], opinion[2]]
 
-    if forced_sexy_opinions and isinstance(forced_sexy_opinions, list):
+    if forced_sexy_opinions and isinstance(forced_sexy_opinions, (list, tuple, set)):
         for opinion in forced_sexy_opinions:
             return_character.sexy_opinions[opinion[0]] = [opinion[1], opinion[2]]
 
@@ -713,9 +714,9 @@ def get_premade_character(age_range, tits_range, height_range, kids_range, relat
     return person
 
 def create_hooker(add_to_game = True):
+    #sex_skill_range_array = [[2, Person.get_sex_skill_ceiling()] for x in range(8)],
+    # sex array 0-Foreplay 1-Oral 2-Vaginal 3-Anal
     person = make_person(sluttiness = renpy.random.randint(30, 55),
-        #sex_skill_range_array = [[2, Person.get_sex_skill_ceiling()] for x in range(8)],
-        # sex array 0-Foreplay 1-Oral 2-Vaginal 3-Anal
         sex_skill_array = [renpy.random.randint(4,8),renpy.random.randint(3,8),renpy.random.randint(2,8),renpy.random.randint(2,8)],
         job = prostitute_job,
         type="unique",
@@ -751,7 +752,6 @@ def create_stripper():
     person = make_person(sluttiness = renpy.random.randint(25, 55),
         job = stripper_job,
         type="unique",
-        #sex_skill_range_array = [[2, Person.get_sex_skill_ceiling()] for x in range(8)],
         sex_skill_array = [renpy.random.randint(4,8),renpy.random.randint(3,8),renpy.random.randint(2,8),renpy.random.randint(2,8)],
         forced_opinions = [
             ["small talk", 1, False],
