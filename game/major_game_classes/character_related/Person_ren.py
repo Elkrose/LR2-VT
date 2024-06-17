@@ -2598,18 +2598,20 @@ class Person(): #Everything that needs to be known about a person.
 
         return False
 
-    def get_opinion_score(self, topic: str) -> int: #Like get_opinion_topic, but only returns the score and not a tuple. Use this when determining a persons reaction to a relevant event.
+    def get_opinion_score(self, topic: str | Iterable[str]) -> int: #Like get_opinion_topic, but only returns the score and not a tuple. Use this when determining a persons reaction to a relevant event.
+        '''
+        Returns score of topic range[-2, 2]
+        When topic is an iterable, sums scores of all topics in the iterable
+        '''
         if isinstance(topic, basestring):
             if topic in self.opinions:
                 return self.opinions[topic][0]
             if topic in self.sexy_opinions:
                 return self.sexy_opinions[topic][0]
 
-        return_value = 0
-        if isinstance(topic, list):
-            for a_topic in topic:
-                return_value += self.get_opinion_score(a_topic)
-        return return_value
+        if isinstance(topic, (list, tuple, set)):
+            return sum(self.get_opinion_score(a_topic) for a_topic in topic)
+        return 0
 
     def get_opinion_topics_list(self, include_unknown = True, include_normal = True, include_sexy = True, include_hate = True, include_dislike = True, include_like = True, include_love = True):
         opinion_return_list = []
