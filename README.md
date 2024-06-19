@@ -15,12 +15,12 @@
 🥵 KiNA's Mods - Good!
 🥵 Kaden's Mods - Good!
 🥵 MonQ Mod - Good!
-❗ Jennifer Content dev - no
+❗ Jennifer Content dev - YES
 ❗ Pregnant Content dev - no
 
 🔥 Lab Rats2 Reformulate: v2024.06-code-beta  Ren'Py 8.2.1
 
-🔥 lr2mods-develop - June 17, 2024 4:04 AM EDT - https://discord.com/channels/564870606382956576/571557121716387840/1252172116925747280
+🔥 lr2mods-develop - June 18, 2024 4:31 PM EDT - https://discord.com/channels/564870606382956576/571557121716387840/1252722366778310719
 
 💮 Vanilla files modified: 12 files
 
