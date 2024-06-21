@@ -244,13 +244,10 @@ def suck_demand_requirement(person: Person):
 def bend_over_your_desk_requirement(person: Person):
     if not (person.is_employee and person.is_at_office):
         return False
-    if person.is_at_stripclub:  # don't show when moonlighting in stripclub
-        return False
     if mc.business.event_triggers_dict.get("employee_over_desk_unlock", False):
         if person.obedience < 130:
             return "Requires: 130 Obedience"
-        else:
-            return True
+        return True
     return False
 
 def demand_strip_requirement(person: Person):

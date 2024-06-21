@@ -5065,10 +5065,11 @@ class Person(): #Everything that needs to be known about a person.
         '''
         return tuple(x for job in self.jobs for x in job.duty_internet_actions)
 
-    def _add_job(self, new_job: JobDefinition, index = 0, job_known = True, start_day = -1):
+    def _add_job(self, new_job: JobDefinition, index = 0, job_known = True, start_day: int = -1):
         '''
         Creates an ActiveJob from a jobdefinition
         Index: 0 - primary, 1 - secondary, 2 - side job
+        start_day: Day when job starts -> -1 is today
         '''
         if not isinstance(new_job, JobDefinition):
             write_log(f"Cannot add job based on empty job_definition for {self.name}")
@@ -5101,11 +5102,12 @@ class Person(): #Everything that needs to be known about a person.
             return 2
         return 0    # primary_job
 
-    def change_job(self, new_job: JobDefinition, is_primary = True, job_known = True, start_day = -1) -> ActiveJob:
+    def change_job(self, new_job: JobDefinition, is_primary = True, job_known = True, start_day: int = -1) -> ActiveJob:
         '''
         Change job to passed definition, by default sets primary_job,
         is_primary: False to set secondary job
         To set side-job -> call Person.set_side_job()
+        start_day: -1 for now, else passed start_day when start_day < day it does the same as passing -1
         '''
         if not isinstance(new_job, JobDefinition):
             return
@@ -5144,12 +5146,13 @@ class Person(): #Everything that needs to be known about a person.
         self._clear_location_cache()
         return True
 
-    def set_side_job(self, new_job: JobDefinition, job_known = True, start_day = -1) -> ActiveJob:
+    def set_side_job(self, new_job: JobDefinition, job_known = True, start_day: int = -1) -> ActiveJob:
         '''
         The sidejob is a special job that overrides the workschedule of the primary job
         THe secondary job fills the gaps in the primary-job / side-job schedule only
         It can be used for example with a student who also works a paying job in town to bolster her income
         during studies or the college athlete who trains during study hours
+        When start_day is passed the job starts on that day else -1 is today
         '''
         if not isinstance(new_job, JobDefinition):
             return
