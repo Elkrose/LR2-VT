@@ -3779,39 +3779,50 @@ class Person(): #Everything that needs to be known about a person.
         elif skill_name == "Supply Skill":
             self.supply_skill = score
 
-        self.sex_skills[skill] = score
         if add_to_log:
             mc.log_event(f"{self.display_name} {skill_name.lower()} is now at level {score}", "float_text_green")
-        return
 
-    def change_sex_skill(self, skill_name: str, amount: int, add_to_log = True): #NOTE: We assume we pass a proper skill name here, otherwise we crash out.
-        # ["Foreplay","Oral","Vaginal","Anal"]
-        if amount + self.sex_skills[skill_name] < 0:
-            amount = -self.sex_skills[skill_name] #At most we make it 0. No negative values.
-        self.sex_skills[skill_name] += amount
+    def change_sex_skill(self, skill_name: str, amount: int, add_to_log = True):
+        '''
+        Change sex skill by passed amount -> skill cannot go lower than 0
+        skill_name: "Foreplay", "Oral", "Vaginal", "Anal"
+        '''
+        if skill_name not in self.sex_skills:
+            return
 
-        if add_to_log and amount != 0:
-            mc.log_event(f"{self.display_name}: {amount:+.0f} {skill_name} Skill", "float_text_yellow")
+        self.update_sex_skill(skill_name, self.sex_skills[skill_name] + amount, add_to_log)
 
     def increase_sex_skill(self, skill: str, max_value = 5, add_to_log = True):
+        '''
+        Increase passed sex skill by 1 but not higher than max_value
+        skill: "Foreplay", "Oral", "Vaginal", "Anal"
+        max_value: maximum value for skill
+        '''
         if skill not in self.sex_skills:
             return
 
         score = self.sex_skills[skill]
         if score < max_value:
             self.update_sex_skill(skill, score + 1, add_to_log)
-        return
 
     def decrease_sex_skill(self, skill: str, add_to_log = True):
+        '''
+        Decrease passed sex skill by 1 -> skill cannot go lower than 0
+        skill: "Foreplay", "Oral", "Vaginal", "Anal"
+        '''
         if skill not in self.sex_skills:
             return
 
         score = self.sex_skills[skill]
         if score > 0:
             self.update_sex_skill(skill, score - 1, add_to_log)
-        return
 
     def update_sex_skill(self, skill: str, score, add_to_log = True):
+        '''
+        Update sex skill to passed value
+        skill: "Foreplay", "Oral", "Vaginal", "Anal"
+        score: new value for skill (cannot go lower than 0)
+        '''
         if skill not in self.sex_skills:
             return
 
@@ -3819,7 +3830,7 @@ class Person(): #Everything that needs to be known about a person.
         if current == score:
             return
 
-        self.sex_skills[skill] = score
+        self.sex_skills[skill] = max(score, 0)
         if add_to_log:
             mc.log_event(f"{self.display_name} {skill.lower()} skill is now at level {score}", "float_text_green")
         return
@@ -4433,8 +4444,9 @@ class Person(): #Everything that needs to be known about a person.
             return not pos_filter([1, position])
         return False
 
-    def is_willing(self, position: Position, private = True) -> bool:
+    def is_willing(self, position: Position, private = True, slut_bonus = 0) -> bool:
         final_slut_requirement, _ = position.calculate_position_requirements(self, False)
+        final_slut_requirement -= slut_bonus    #Use slut bonus to determine if an extra X sluttiness would make a girl willing
         # DON'T USE EFFECTIVE SLUTTINESS IN THIS FUNCTION
         # IT CAN HAVE THE MODIFIERS THAT THIS FUNCTION EMULATES
         # TO VALIDATE PRIOR TO ACTUALLY STARTING THE SEX LOOP
