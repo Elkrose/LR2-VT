@@ -1096,6 +1096,10 @@ label bc_talk_label(the_person):
                     the_person "I should be able to start tomorrow, we will still need to be careful until then."
                     $ manage_bc(the_person, start = True)
 
+                elif the_person.event_triggers_dict.get("refuse_bc", False):
+                    "She shakes her head."
+                    the_person "I'm sorry, but I have personal reason for not going on birth control. Please don't ask me to do that."
+
                 else:
                     "She shakes her head."
                     if the_person.wants_creampie:
@@ -1124,6 +1128,15 @@ label bc_talk_label(the_person):
                         the_person "Okay, I won't take my birth control in the morning. We'll just be careful, it'll be fine..."
 
                     $ manage_bc(the_person, start = False)
+
+                elif the_person.event_triggers_dict.get("mandate_bc", False):
+                    "She shakes her head."
+                    if the_person == mom:
+                        the_person "I'm sorry, but I can't go off birth control."
+                        the_person "Things have gotten intimate between me and my boss, but I don't want him to get me pregnant!"
+                        the_person "I can't go off birth control right now. Okay?"
+                    else:
+                        the_person "I'm sorry, but I have personal reason for being on birth control. Please don't ask me to do that."
 
                 else:
                     if the_person.opinion.bareback_sex > 0:
@@ -1155,7 +1168,10 @@ label bc_talk_label(the_person):
         menu:
             "Start taking birth control" if not the_person.on_birth_control:
                 mc.name "You should probably start taking it, before something happens and you get pregnant."
-                if the_person not in (kaya, sakari) and (the_person.love >= needed_start or the_person.effective_sluttiness() >= needed_start):
+                if the_person.event_triggers_dict.get("refuse_bc", False):
+                    "She shakes her head."
+                    the_person "I'm sorry, but I have personal reason for not going on birth control. Please don't ask me to do that."
+                elif the_person not in (kaya, sakari) and (the_person.love >= needed_start or the_person.effective_sluttiness() >= needed_start):
                     the_person "That's probably a good idea. I'll talk to my doctor as soon as possible about it."
                     $ manage_bc(the_person, start = True)
                 else:
@@ -1170,7 +1186,15 @@ label bc_talk_label(the_person):
 
             "Stop taking birth control" if the_person.on_birth_control:
                 mc.name "You should stop taking it. Wouldn't that be really hot?"
-                if the_person.love >= needed_start or the_person.effective_sluttiness() >= needed_stop:
+                if the_person.event_triggers_dict.get("mandate_bc", False):
+                    "She shakes her head."
+                    if the_person == mom:
+                        the_person "I'm sorry, but I can't go off birth control."
+                        the_person "Things have gotten intimate between me and my boss, but I don't want him to get me pregnant!"
+                        the_person "I can't go off birth control right now. Okay?"
+                    else:
+                        the_person "I'm sorry, but I have personal reason for being on birth control. Please don't ask me to do that."
+                elif the_person.love >= needed_start or the_person.effective_sluttiness() >= needed_stop:
                     if the_person.wants_creampie:
                         the_person "Do you think so? I've always wanted to, I don't think I can trust myself to tell a man to pull out."
                         the_person "Even if I know that's the smart thing to do I would probably just beg for a hot load inside me..."
@@ -1241,6 +1265,9 @@ label bc_demand_label(the_person):
             mc.name "I want you to start taking some. I don't want you getting pregnant."
             if the_person in (kaya, sakari):
                 the_person "I'm sorry, that's against everything we believe in, so I can't do that."
+            elif the_person.event_triggers_dict.get("refuse_bc", False):
+                "She shakes her head."
+                the_person "I'm sorry, but I have personal reason for not going on birth control. Please don't ask me to do that."
             else:
                 "[the_person.possessive_title!c] nods."
                 the_person "Okay, I can do that. I'll talk to my doctor, I think I'll be able to start taking them tomorrow."
@@ -1253,7 +1280,15 @@ label bc_demand_label(the_person):
         "Stop taking birth control" if the_person.on_birth_control and the_person.obedience >= 160:
             mc.name "I want you to stop taking it."
             $ complains_threshold = 45 - (15 * the_person.opinion.creampies)
-            if the_person.effective_sluttiness() >= complains_threshold:
+            if the_person.event_triggers_dict.get("mandate_bc", False):
+                "She shakes her head."
+                if the_person == mom:
+                    the_person "I'm sorry, but I can't go off birth control."
+                    the_person "Things have gotten intimate between me and my boss, but I don't want him to get me pregnant!"
+                    the_person "I can't go off birth control right now. Okay?"
+                else:
+                    the_person "I'm sorry, but I have personal reason for being on birth control. Please don't ask me to do that."
+            elif the_person.effective_sluttiness() >= complains_threshold:
                 # She's slutty enough that it's not even a concern.
                 "[the_person.possessive_title!c] nods obediently."
                 the_person "Okay, I'll stop right away, but I already took one this morning."
