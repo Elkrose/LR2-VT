@@ -3833,7 +3833,6 @@ class Person(): #Everything that needs to be known about a person.
         self.sex_skills[skill] = max(score, 0)
         if add_to_log:
             mc.log_event(f"{self.display_name} {skill.lower()} skill is now at level {score}", "float_text_green")
-        return
 
     def change_stats(self, obedience: int | None = None, happiness: int | None = None, arousal: int | None = None, love: int | None = None,
                     slut: int | None = None, max_slut: int = 100, max_love: int = 100, max_obedience: int = 300,
