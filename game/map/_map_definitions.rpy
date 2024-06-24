@@ -30,7 +30,7 @@ label instantiate_map_locations():
 
         ##PC's Work##
         ceo_office = Room("ceo_office", "CEO Office", "CEO_Office_Background", ceo_office_objects,
-            actions = [policy_purchase_action, set_uniform_action, set_serum_action],
+            actions = [policy_purchase_action, set_uniform_action, set_serum_action, set_personal_secretary_action],
             map_pos = [1,0], lighting_conditions = standard_indoor_lighting,
             privacy_level = 2, allow_walk_in = True)
         lobby = Room("lobby", "Lobby", "Office_Lobby_Background", [make_floor(), make_wall(), make_reception(), make_chair(), make_front_door(), make_window()],
@@ -147,7 +147,7 @@ label instantiate_map_locations():
             privacy_level = 1, accessible_func = gym_is_open, allow_walk_in = True)
 
         sex_store = Room("sex_store", "Sex Store", "Sex_Shop_Background", generic_store_objects,
-            map_pos = [1,1], lighting_conditions = standard_indoor_lighting,
+            map_pos = [1,1], visible = False, lighting_conditions = standard_indoor_lighting,
             privacy_level = 1, accessible_func = sex_shop_is_open)
 
         ## Mall supporting locations
