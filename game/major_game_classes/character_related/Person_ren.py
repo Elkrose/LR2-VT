@@ -19,6 +19,7 @@ from game.bugfix_additions.mapped_list_ren import generate_identifier
 from game.helper_functions.character_display_functions_ren import clear_scene
 from game.helper_functions.convert_to_string_ren import SO_relationship_to_title, capitalize_first_word, girl_relationship_to_title, opinion_score_to_string, remove_punctuation
 from game.helper_functions.list_functions_ren import all_people_in_the_game, flatten_list, get_random_from_list
+from game.helper_functions.misc_helpers_ren import darken_colour, lighten_colour
 from game.helper_functions.play_sounds_ren import play_female_orgasm, play_spank_sound
 from game.helper_functions.random_generation_functions_ren import make_person
 from game.helper_functions.webcolors_usage_ren import closest_eye_color, closest_hair_colour
@@ -882,12 +883,12 @@ class Person(): #Everything that needs to be known about a person.
         else:
             self.pubes_style = pubes_style.get_copy()
 
-        self.set_hair_colour(Color(rgb=(hair_colour[1][0], hair_colour[1][1], hair_colour[1][2], hair_colour[1][3])))
+        self.set_hair_colour(Color(rgb=(hair_colour[1][0], hair_colour[1][1], hair_colour[1][2]), alpha = hair_colour[1][3]))
 
         self.skin = skin
         self.tan_style = tan_style
 
-        self.set_eye_colour(Color(rgb=(eyes[1][0], eyes[1][1], eyes[1][2], eyes[1][3])))
+        self.set_eye_colour(Color(rgb=(eyes[1][0], eyes[1][1], eyes[1][2]), alpha = eyes[1][3]))
 
         self.serum_tolerance = serum_tolerance      #How many active serums this person can tolerate before they start to suffer negative effects.
         self.serum_effects: list[SerumDesign] = []  #A list of all of the serums we are under the effect of.
@@ -5328,9 +5329,19 @@ class Person(): #Everything that needs to be known about a person.
         self.hair_style.colour = self.hair_colour[1]
 
         if change_pubes:
-            pubes_colour = new_colour.shade(1.0 - darken_pubes_amount)
+            pubes_colour = darken_colour(self.hair_colour[1], darken_pubes_amount)
             self.pubes_colour = list(pubes_colour.rgba)
             self.pubes_style.colour = self.pubes_colour
+
+    def lighten_hair_colour(self, factor: float = .07):
+        new_colour = lighten_colour(self.hair_colour[1], factor)
+        if new_colour:
+            self.set_hair_colour(new_colour, change_pubes = False)
+
+    def darken_hair_colour(self, factor: float = .07):
+        new_colour = darken_colour(self.hair_colour[1], factor)
+        if new_colour:
+            self.set_hair_colour(new_colour, change_pubes = False)
 
     @property
     def maximum_milk_in_breasts(self) -> int:
