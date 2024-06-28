@@ -342,7 +342,7 @@ def create_random_person(name = None, name_list = None, last_name = None, last_n
         kids = max(kids, kids_floor)
         if kids_ceiling is not None:
             kids = min(kids, kids_ceiling)
-        if age <=18 and (type!="story" or type!="unique"): kids=0
+        if age <=18 and type not in ["story","unique"]: kids=0
         if hymen==0 or hymen==1: kids=0
 
     if relationship != "Single" and SO_name is None:
@@ -353,14 +353,17 @@ def create_random_person(name = None, name_list = None, last_name = None, last_n
         )
 
     if serum_tolerance is None:
-        serum_tolerance = get_random_from_weighted_list([[0, 5], [1, 20], [2, 40], [3, 30], [4, 5]])
+        if type not in ["story","unique","VTstory"]:
+            serum_tolerance = get_random_from_weighted_list([[0, 5], [1, 20], [2, 40], [3, 30], [4, 5]])
+        else:
+            serum_tolerance = 1
+    
+    #if someone forgot to set a sexcap it will default to get_skill_ceiling
+    if sex_cap is None:
+        sex_cap = Person.get_sex_skill_ceiling()
 
 ### ADDING THE Virginal Tracker Script
     #hymen is 0 = sealed, 1=recently torn bleeding, 3=normal - serum to regenerate vaginal and hymen!
-    #vaginal_virgin is 0=virgin, 1=just the tip, 2=full penetration, 3-10 is degree of tightness to loose
-    #anal_virgin is 0=virgin, 1=just the tip, 2=full penetration, 3-10 is degree of tightness to loose -placeholder atm
-    #oral_virgin is 0=virgin, 1=just the tip, 2=full penetration, 3-10 is degree of tightness to loose -placeholder atm
-    #vaginal_first = None (Placeholder), anal_first = None (Placeholder), Oral_first = None (Placeholder) - can change to mc.name or SO_name
     #moved sexstats here to have the skill/stat/sex array be handled in one flow.
     # sex array 0-Foreplay 1-Oral 2-Vaginal 3-Anal
     if sex_skill_array is None:
@@ -370,270 +373,462 @@ def create_random_person(name = None, name_list = None, last_name = None, last_n
     #ie, not a virginal... doing a randint(-2,2) would give a random result of their skills based on experience
 
     if hymen is None:
+        # hymen will always be NONE on first pass of characters
         #story or unique character Check so the random doesn't affect them
-        if type=="story" or type=="unique":
+        # using _virgin as a placeholder to increase sex_skills if _virgin >2 so rando not so innocent
+        # basically run_on turn returns the _virgin back down to 3 = normal
+        # _virgin stats: 0 = true_virgin, 1 = just the tip still virgin, 2 = penetration, 3 = normal
+        # _first stats: None = true_virgin, SO_name or mc.name = taken
+        # _cum: 0 = no cum in orifice += amount of cum in orifice
+        # story/unique/VTstory bypasses most of the virgin randomizer
+        if type in ["story", "unique", "VTstory"]:
+            #Clone Check - clone retain prior sex stats
+            if title is ["Clone"]:#remove this part of the if statement to remove the 18 only virgins
+                #clone has no kids and never had sex before
+                oral_first is None
+                oral_virgin = 0
+                oral_cum = 0
+                anal_first is None
+                anal_virgin = 0
+                anal_cum = 0
+                vaginal_first is None
+                vaginal_virgin = 0
+                vaginal_cum = 0
+                hymen = 0
+                kids = 0
             #Oral Check
             if sex_skill_array[1]==0:
+                oral_first is None
                 oral_virgin = 0
             else:
-                if relationship!="Single":
-                    if SO_name is None or SO_name is mc.name: 
-                        if SO_name==mc.name: oral_first = mc.name
-                        else: oral_first = Person.get_random_male_name()
-                    else: oral_first = SO_name
-                else: 
-                   oral_first = Person.get_random_male_name()
+                #relationship
+                if relationship != "Single":
+                    oral_first = SO_name if SO_name and SO_name != mc.name else Person.get_random_male_name()
+                else:
+                    oral_first = Person.get_random_male_name()
+                # sex_skill checks to give uniques an advantage if skills are lower than 2
                 if sex_skill_array[1]<= 2: 
                     oral_virgin = renpy.random.randint(2,sex_cap)
                     sex_skill_array[1] = oral_virgin
-                else: 
-                    if sex_skill_array[1]>10: oral_virgin = 10
-                    else: oral_virgin = sex_skill_array[1]
-            #Vaginal check
-            if sex_skill_array[2]==0:
-                vaginal_virgin = 0
-                hymen = 0
-            else:
-                if sex_skill_array[2]<= 2: 
-                    if sex_skill_array[2]==1: hymen = 0  #just the tip :P
+                #set _virgin to normal
+                oral_virgin = 3
+            #Vaginal check also need to check kids
+            if kids <= 0 or kids is None:
+                if sex_skill_array[2]==0:
+                    vaginal_first is None
+                    vaginal_virgin = 0
+                    hymen = 0
+                else:
+                    if sex_skill_array[2]== 1: #just the tip
+                        hymen = 0
+                        vaginal_virgin = 1
+                        vaginal_first is None
                     else:
-                        if relationship!="Single":
-                            if SO_name is None or SO_name is mc.name: 
-                                if SO_name==mc.name: vaginal_first = mc.name
-                                else: vaginal_first = Person.get_random_male_name()
-                            else: vaginal_first = SO_name
+                        #relationship
+                        if relationship != "Single":
+                            vaginal_first = SO_name if SO_name and SO_name != mc.name else Person.get_random_male_name()
                         else:
                             vaginal_first = Person.get_random_male_name()
-                        vaginal_virgin = renpy.random.randint(2,sex_cap)
-                        sex_skill_array[2] = vaginal_virgin
+                        #sex_skill checks, use _virgin as placeholder
+                        #unique skills are always 2 or higher in sex stats
+                        if sex_skill_array[2]<= 2: 
+                            vaginal_virgin = renpy.random.randint(2,sex_cap)
+                            sex_skill_array[2] = vaginal_virgin
+                        #set _virgin to normal
+                        vaginal_virgin = 3
                         hymen = 2
+                        kids is None
+            else:
+                #relationship
+                if relationship != "Single":
+                    vaginal_first = SO_name if SO_name and SO_name != mc.name else Person.get_random_male_name()
                 else:
-                    hymen = 2
-                    if relationship!="Single":
-                        if SO_name is None or SO_name is mc.name: 
-                            if SO_name==mc.name: vaginal_first = mc.name
-                            else: vaginal_first = Person.get_random_male_name()
-                        else: vaginal_first = SO_name
-                    else:
-                        vaginal_first = Person.get_random_male_name()
-                    if sex_skill_array[2]>10: vaginal_virgin = 10
-                    else: 
-                        vaginal_virgin = sex_skill_array[2]
+                    vaginal_first = Person.get_random_male_name()
+                #sex_skill checks, use _virgin as placeholder
+                if sex_skill_array[2]<= 2: 
+                    vaginal_virgin = renpy.random.randint(2,sex_cap)
+                    sex_skill_array[1] = vaginal_virgin
+                #to give moms an edge, increase sex_skill by # of kids
+                if sex_skill_array[2] <= Person.get_skill_ceiling()+kids:
+                    sex_skill_array[2] = renpy.random.randint(kids, Person.get_skill_ceiling()+kids)
+                #set _virgin to normal
+                vaginal_virgin = 3
+                hymen = 2
             #Anal Check
             if sex_skill_array[3]==0:
+                anal_first is None
                 anal_virgin = 0
             else:
-                if relationship!="Single":
-                    if SO_name is None or SO_name is mc.name: 
-                        if SO_name==mc.name: anal_first = mc.name
-                        else: anal_first = Person.get_random_male_name()
-                    else: anal_first = SO_name
+                #relationship
+                if relationship != "Single":
+                    anal_first = SO_name if SO_name and SO_name != mc.name else Person.get_random_male_name()
                 else:
                     anal_first = Person.get_random_male_name()
+                #sex_skill checks, use _virgin as placeholder
                 if sex_skill_array[3]<= 2:
                     anal_virgin = renpy.random.randint(2,sex_cap)
                     sex_skill_array[3] = anal_virgin
-                else: 
-                    if sex_skill_array[3]>10: anal_virgin = 10
-                    else: anal_virgin = sex_skill_array[3]
+                #set _virgin to normal
+                anal_virgin = 3
         else:        
+            #Clone Check - Clones retain prior sex stats
+            if title is ["Clone"]:
+                oral_first = None
+                oral_virgin = 0
+                oral_cum = 0
+                anal_first = None
+                anal_virgin = 0
+                anal_cum = 0
+                vaginal_first = None
+                vaginal_virgin = 0
+                vaginal_cum = 0
+                hymen = 0
+                kids = 0
             if age <=19:
                 #According to CDC data, 70.7% of 15- to 19-year-olds have had sex = 30% are virgin
                 #its a game, so making it 90% as random goes, for interesting results and mixes
                 #so increase of x3
-                if age <=Person.get_age_floor():#remove this part of the if statement to remove the 18 only virgins
-                    sex_skill_array[1] = 0
-                    sex_skill_array[2] = 0
-                    sex_skill_array[3] = 0
-                    hymen = 0
+                if age <= Person.get_age_floor():
+                    # 99% chance of creating a true virgin
+                    if (renpy.random.randint(1, 100)) <= 99:
+                        oral_first is None
+                        oral_virgin = 0
+                        oral_cum = 0
+                        anal_first is None
+                        anal_virgin = 0
+                        anal_cum = 0
+                        vaginal_first is None
+                        vaginal_virgin = 0
+                        vaginal_cum = 0
+                        sex_skill_array[1] = 0
+                        sex_skill_array[2] = 0
+                        sex_skill_array[3] = 0
+                        hymen = 0
+                    else:
+                        #Oral Check
+                        if (renpy.random.randint(1, 100))<=70: #70% chance of NOT being virginal
+                            #relationship
+                            if relationship != "Single":
+                                oral_first = SO_name if SO_name and SO_name != mc.name else Person.get_random_male_name()
+                            else:
+                                oral_first = Person.get_random_male_name()
+                            # sex_skill checks, use _virgin as placeholder
+                            # always re-roll 0s, always higher than 0
+                            if sex_skill_array[1]<= 0: 
+                                oral_virgin = renpy.random.randint(1,sex_cap)
+                                sex_skill_array[1] = oral_virgin
+                            #set _virgin to normal
+                            oral_virgin = 3
+                        else:
+                            sex_skill_array[1] = 0
+                            oral_virgin = 0
+                            oral_first is None
+                        #Vaginal check - taking kids into consideration
+                        if kids <= 0 or kids is None:
+                            if (renpy.random.randint(1, 100))<=70: #70% chance of NOT being virginal
+                                #relationship
+                                if relationship != "Single":
+                                    vaginal_first = SO_name if SO_name and SO_name != mc.name else Person.get_random_male_name()
+                                else:
+                                    vaginal_first = Person.get_random_male_name()
+                                #sex_skill checks, use _virgin as placeholder
+                                # always re-roll 0s, always higher than 0
+                                if sex_skill_array[2]<= 0: 
+                                    vaginal_virgin = renpy.random.randint(1,sex_cap)
+                                    sex_skill_array[2] = vaginal_virgin
+                                #set _virgin to normal
+                                vaginal_virgin = 3
+                                hymen = 2
+                                kids is None
+                            else:
+                                if sex_skill_array[2]==1: #just the tip :P
+                                    hymen = 0  
+                                    vaginal_virgin = 1
+                                    vaginal_first is None
+                                else: 
+                                    vaginal_first is None
+                                    vaginal_virgin = 0
+                                    sex_skill_array[2] = 0
+                                    hymen = 0
+                        else:
+                            #relationship
+                            if relationship != "Single":
+                                vaginal_first = SO_name if SO_name and SO_name != mc.name else Person.get_random_male_name()
+                            else:
+                                vaginal_first = Person.get_random_male_name()
+                            #sex_skill checks, use _virgin as placeholder
+                            #always re-roll 0s, always higher than 0
+                            if sex_skill_array[2]<= 0: 
+                                vaginal_virgin = renpy.random.randint(1,sex_cap)
+                                sex_skill_array[2] = vaginal_virgin
+                            #to give moms an edge, increase sex_skill by # of kids
+                            if sex_skill_array[2] <= Person.get_skill_ceiling()+kids:
+                                sex_skill_array[2] = renpy.random.randint(kids, Person.get_skill_ceiling()+kids)
+                            #set _virgin to normal
+                            vaginal_virgin = 3
+                            hymen = 2
+                        #Anal Check
+                        if (renpy.random.randint(1, 100))<=70: #70% chance of NOT being virginal
+                            #relationship
+                            if relationship != "Single":
+                                anal_first = SO_name if SO_name and SO_name != mc.name else Person.get_random_male_name()
+                            else:
+                                anal_first = Person.get_random_male_name()
+                            #sex_skill checks, use _virgin as placeholder
+                            #always re-roll 0s, always higher than 0
+                            if sex_skill_array[3]<= 0:
+                                anal_virgin = renpy.random.randint(1,sex_cap)
+                                sex_skill_array[3] = anal_virgin
+                            #set _virgin to normal
+                            anal_virgin = 3
+                        else:
+                            anal_first is None
+                            anal_virgin = 0
+                            sex_skill_array[3] = 0
                 else:
-                    if (renpy.random.randint(1, 100))>=30: #70% chance of NOT being virginal
-                        oral_first = Person.get_random_male_name()
-                        if sex_skill_array[1]<= 2: 
-                            oral_virgin = renpy.random.randint(2,sex_cap)
+                    #Oral Check
+                    if (renpy.random.randint(1, 100))<=70: #70% chance of NOT being virginal
+                        #relationship
+                        if relationship != "Single":
+                            oral_first = SO_name if SO_name and SO_name != mc.name else Person.get_random_male_name()
+                        else:
+                            oral_first = Person.get_random_male_name()
+                        # sex_skill checks, use _virgin as placeholder
+                        # always re-roll 0s, always higher than 0
+                        if sex_skill_array[1]<= 0: 
+                            oral_virgin = renpy.random.randint(1,sex_cap)
                             sex_skill_array[1] = oral_virgin
-                        else: 
-                            if sex_skill_array[1]>10: oral_virgin = 10
-                            else: oral_virgin = sex_skill_array[1]
+                        #set _virgin to normal
+                        oral_virgin = 3
                     else:
                         sex_skill_array[1] = 0
                         oral_virgin = 0
-                    #Vaginal check
-                    if (renpy.random.randint(1, 100))>=30: #70% chance of NOT being virginal
-                        hymen = 2
-                        vaginal_first = Person.get_random_male_name()
-                        if sex_skill_array[2]<= 2: 
-                            if sex_skill_array[2]==1: hymen = 0  #just the tip :P
-                            else: 
-                                vaginal_virgin = renpy.random.randint(2,sex_cap)
+                        oral_first is None
+                    #Vaginal check - taking kids into consideration
+                    if kids <= 0 or kids is None:
+                        if (renpy.random.randint(1, 100))<=70: #70% chance of NOT being virginal
+                            #relationship
+                            if relationship != "Single":
+                                vaginal_first = SO_name if SO_name and SO_name != mc.name else Person.get_random_male_name()
+                            else:
+                                vaginal_first = Person.get_random_male_name()
+                            #sex_skill checks, use _virgin as placeholder
+                            # always re-roll 0s, always higher than 0
+                            if sex_skill_array[2]<= 0: 
+                                vaginal_virgin = renpy.random.randint(1,sex_cap)
                                 sex_skill_array[2] = vaginal_virgin
-                        else: 
-                            if sex_skill_array[2]>10: vaginal_virgin = 10
-                            else: vaginal_virgin = sex_skill_array[2]
+                            #set _virgin to normal
+                            vaginal_virgin = 3
+                            hymen = 2
+                            kids is None
+                        else:
+                            if sex_skill_array[2]==1: #just the tip :P
+                                hymen = 0  
+                                vaginal_virgin = 1
+                                vaginal_first is None
+                            else: 
+                                vaginal_first is None
+                                vaginal_virgin = 0
+                                sex_skill_array[2] = 0
+                                hymen = 0
                     else:
-                        vaginal_virgin = 0
-                        sex_skill_array[2] = 0
-                        hymen = 0
+                        #relationship
+                        if relationship != "Single":
+                            vaginal_first = SO_name if SO_name and SO_name != mc.name else Person.get_random_male_name()
+                        else:
+                            vaginal_first = Person.get_random_male_name()
+                        #sex_skill checks, use _virgin as placeholder
+                        #always re-roll 0s, always higher than 0
+                        if sex_skill_array[2]<= 0: 
+                            vaginal_virgin = renpy.random.randint(1,sex_cap)
+                            sex_skill_array[2] = vaginal_virgin
+                        #to give moms an edge, increase sex_skill by # of kids
+                        if sex_skill_array[2] <= Person.get_skill_ceiling()+kids:
+                            sex_skill_array[2] = renpy.random.randint(kids, Person.get_skill_ceiling()+kids)
+                        #set _virgin to normal
+                        vaginal_virgin = 3
+                        hymen = 2
                     #Anal Check
-                    if (renpy.random.randint(1, 100))>=30: #70% chance of NOT being virginal
-                        anal_first = Person.get_random_male_name()
-                        if sex_skill_array[3]<= 2:
-                            anal_virgin = renpy.random.randint(2,sex_cap)
+                    if (renpy.random.randint(1, 100))<=70: #70% chance of NOT being virginal
+                        #relationship
+                        if relationship != "Single":
+                            anal_first = SO_name if SO_name and SO_name != mc.name else Person.get_random_male_name()
+                        else:
+                            anal_first = Person.get_random_male_name()
+                        #sex_skill checks, use _virgin as placeholder
+                        #always re-roll 0s, always higher than 0
+                        if sex_skill_array[3]<= 0:
+                            anal_virgin = renpy.random.randint(1,sex_cap)
                             sex_skill_array[3] = anal_virgin
-                        else: 
-                            if sex_skill_array[3]>10: anal_virgin = 10
-                            else: anal_virgin = sex_skill_array[3]
+                        #set _virgin to normal
+                        anal_virgin = 3
                     else:
+                        anal_first is None
                         anal_virgin = 0
                         sex_skill_array[3] = 0
             elif age >=20 and age <=30:
                 #According to the same CDC data: 20-24:12.3%, 25-29: 5%, 30-34:2.4, 40-44: 0.3%
                 #so if I used 90% then it would be 10%, to maintain an interesting ratio would be 30%
                 #Oral Check
-                if (renpy.random.randint(1, 100))>=30: #10% chance of being virginal 30% for interests
-                    if relationship!="Single":
-                        if SO_name is None or SO_name is mc.name: 
-                            if SO_name==mc.name: oral_first = mc.name
-                            else: oral_first = Person.get_random_male_name()
-                        else: oral_first = SO_name
-                    else: oral_first = Person.get_random_male_name()
-                    if sex_skill_array[1]<= 2: 
-                        oral_virgin = renpy.random.randint(2,sex_cap)
+                if (renpy.random.randint(1, 100))<=70: #70% chance of NOT being virginal
+                    #relationship
+                    if relationship != "Single":
+                        oral_first = SO_name if SO_name and SO_name != mc.name else Person.get_random_male_name()
+                    else:
+                        oral_first = Person.get_random_male_name()
+                    # sex_skill checks, use _virgin as placeholder
+                    # always re-roll 0s, always higher than 0
+                    if sex_skill_array[1]<= 0: 
+                        oral_virgin = renpy.random.randint(1,sex_cap)
                         sex_skill_array[1] = oral_virgin
-                    else: 
-                        if sex_skill_array[1]>10: oral_virgin = 10
-                        else: oral_virgin = sex_skill_array[1]
+                    #set _virgin to normal
+                    oral_virgin = 3
                 else:
-                    oral_virgin = 0
                     sex_skill_array[1] = 0
-
+                    oral_virgin = 0
+                    oral_first is None
                 #Vaginal check - taking kids into consideration
                 if kids <= 0 or kids is None:
-                    if (renpy.random.randint(1, 100))>=30: #10% chance of being virginal
-                        hymen = 2
-                        if relationship!="Single":
-                            if SO_name is None or SO_name is mc.name: 
-                                if SO_name==mc.name: vaginal_first = mc.name
-                                else: vaginal_first = Person.get_random_male_name()
-                            else: vaginal_first = SO_name
-                        else: vaginal_first = Person.get_random_male_name()
-                        if sex_skill_array[2]<= 2: 
-                            vaginal_virgin = renpy.random.randint(2,sex_cap)
+                    if (renpy.random.randint(1, 100))<=70: #70% chance of NOT being virginal
+                        #relationship
+                        if relationship != "Single":
+                            vaginal_first = SO_name if SO_name and SO_name != mc.name else Person.get_random_male_name()
+                        else:
+                            vaginal_first = Person.get_random_male_name()
+                        #sex_skill checks, use _virgin as placeholder
+                        # always re-roll 0s, always higher than 0
+                        if sex_skill_array[2]<= 0: 
+                            vaginal_virgin = renpy.random.randint(1,sex_cap)
                             sex_skill_array[2] = vaginal_virgin
-                        else: 
-                            if sex_skill_array[2]>10: vaginal_virgin = 10
-                            else: vaginal_virgin = sex_skill_array[2]
+                        #set _virgin to normal
+                        vaginal_virgin = 3
+                        hymen = 2
+                        kids is None
                     else:
-                        if sex_skill_array[2]==1: hymen = 0  #just the tip :P
+                        if sex_skill_array[2]==1: #just the tip :P
+                            hymen = 0  
+                            vaginal_virgin = 1
+                            vaginal_first is None
                         else: 
+                            vaginal_first is None
+                            vaginal_virgin = 0
                             sex_skill_array[2] = 0
                             hymen = 0
                 else:
-                    hymen = 2
-                    if relationship!="Single":
-                        if SO_name is None or SO_name is mc.name: 
-                            if SO_name==mc.name: vaginal_first = mc.name
-                            else: vaginal_first = Person.get_random_male_name()
-                        else: vaginal_first = SO_name
-                    else: vaginal_first = Person.get_random_male_name()
-                    if sex_skill_array[2]<= 2: 
-                        vaginal_virgin = renpy.random.randint(2,sex_cap)
+                    #relationship
+                    if relationship != "Single":
+                        vaginal_first = SO_name if SO_name and SO_name != mc.name else Person.get_random_male_name()
+                    else:
+                        vaginal_first = Person.get_random_male_name()
+                    #sex_skill checks, use _virgin as placeholder
+                    #always re-roll 0s, always higher than 0
+                    if sex_skill_array[2]<= 0: 
+                        vaginal_virgin = renpy.random.randint(1,sex_cap)
                         sex_skill_array[2] = vaginal_virgin
-                    else: 
-                        if sex_skill_array[2]>10: vaginal_virgin = 10
-                        else: vaginal_virgin = 7
-
+                    #to give moms an edge, increase sex_skill by # of kids
+                    if sex_skill_array[2] <= Person.get_skill_ceiling()+kids:
+                        sex_skill_array[2] = renpy.random.randint(kids, Person.get_skill_ceiling()+kids)
+                    #set _virgin to normal
+                    vaginal_virgin = 3
+                    hymen = 2
                 #Anal Check
-                if (renpy.random.randint(1, 100))>=30: #30% chance of being virginal
-                    if relationship!="Single":
-                        if SO_name is None or SO_name is mc.name: 
-                            if SO_name==mc.name: anal_first = mc.name
-                            else: anal_first = Person.get_random_male_name()
-                        else: anal_first = SO_name
-                    else: anal_first = Person.get_random_male_name()
-                    if sex_skill_array[3]<= 2: 
-                        anal_virgin = renpy.random.randint(2,sex_cap)
+                if (renpy.random.randint(1, 100))<=70: #70% chance of NOT being virginal
+                    #relationship
+                    if relationship != "Single":
+                        anal_first = SO_name if SO_name and SO_name != mc.name else Person.get_random_male_name()
+                    else:
+                        anal_first = Person.get_random_male_name()
+                    #sex_skill checks, use _virgin as placeholder
+                    #always re-roll 0s, always higher than 0
+                    if sex_skill_array[3]<= 0:
+                        anal_virgin = renpy.random.randint(1,sex_cap)
                         sex_skill_array[3] = anal_virgin
-                    else: 
-                        if sex_skill_array[3]>10: anal_virgin = 10
-                        else: anal_virgin = sex_skill_array[3]
+                    #set _virgin to normal
+                    anal_virgin = 3
                 else:
+                    anal_first is None
                     anal_virgin = 0
                     sex_skill_array[3] = 0
 
             elif age >=31:
                 #Oral Check
-                if (renpy.random.randint(1, 100))>=10: #10% chance of being virginal, not real life :P just to add spice to the game
-                    if relationship!="Single":
-                        if SO_name is None or SO_name is mc.name: 
-                            if SO_name==mc.name: oral_first = mc.name
-                            else: oral_first = Person.get_random_male_name()
-                        else: oral_first = SO_name
-                    else: oral_first = Person.get_random_male_name()
-                    if sex_skill_array[1]<= 2: 
-                        oral_virgin = renpy.random.randint(2,sex_cap)
-                        sex_skill_array[1] = oral_virgin
-                    else: 
-                        if sex_skill_array[1]>10: oral_virgin = 10
-                        else: oral_virgin = sex_skill_array[1]
-                else:
-                    oral_virgin = 0
-                    sex_skill_array[1] = 0
-
-                #Vaginal check
-                if kids <= 0 or kids is None:
-                    kids = 0
-                    if (renpy.random.randint(1, 100))>=10: #10% chance of being virginal for spice
-                        hymen = 2
-                        if relationship!="Single":
-                            if SO_name is None or SO_name is mc.name: 
-                                if SO_name==mc.name: vaginal_first = mc.name
-                                else: vaginal_first = Person.get_random_male_name()
-                            else: vaginal_first = SO_name
-                        else: vaginal_first = Person.get_random_male_name()
-                        
-                        if sex_skill_array[2]<= 2: 
-                            vaginal_virgin = renpy.random.randint(2,sex_cap)
-                            sex_skill_array[2] = vaginal_virgin
-                        else: 
-                            if sex_skill_array[2]>10: vaginal_virgin = 10
-                            else: vaginal_virgin = sex_skill_array[2]
+                if (renpy.random.randint(1, 100))<=90: #90% chance of NOT being virginal
+                    #relationship
+                    if relationship != "Single":
+                        oral_first = SO_name if SO_name and SO_name != mc.name else Person.get_random_male_name()
                     else:
-                        if sex_skill_array[2]==1: hymen = 0  #just the tip :P
+                        oral_first = Person.get_random_male_name()
+                    # sex_skill checks, use _virgin as placeholder
+                    # always re-roll 0s, always higher than 0
+                    if sex_skill_array[1]<= 0: 
+                        oral_virgin = renpy.random.randint(1,sex_cap)
+                        sex_skill_array[1] = oral_virgin
+                    #set _virgin to normal
+                    oral_virgin = 3
+                else:
+                    sex_skill_array[1] = 0
+                    oral_virgin = 0
+                    oral_first is None
+                #Vaginal check - taking kids into consideration
+                if kids <= 0 or kids is None:
+                    if (renpy.random.randint(1, 100))<=90: #90% chance of NOT being virginal
+                        #relationship
+                        if relationship != "Single":
+                            vaginal_first = SO_name if SO_name and SO_name != mc.name else Person.get_random_male_name()
+                        else:
+                            vaginal_first = Person.get_random_male_name()
+                        #sex_skill checks, use _virgin as placeholder
+                        # always re-roll 0s, always higher than 0
+                        if sex_skill_array[2]<= 0: 
+                            vaginal_virgin = renpy.random.randint(1,sex_cap)
+                            sex_skill_array[2] = vaginal_virgin
+                        #set _virgin to normal
+                        vaginal_virgin = 3
+                        hymen = 2
+                        kids is None
+                    else:
+                        if sex_skill_array[2]==1: #just the tip :P
+                            hymen = 0  
+                            vaginal_virgin = 1
+                            vaginal_first is None
                         else: 
+                            vaginal_first is None
+                            vaginal_virgin = 0
                             sex_skill_array[2] = 0
                             hymen = 0
                 else:
-                    hymen = 2
-                    if relationship!="Single":
-                        if SO_name is None or SO_name is mc.name: 
-                            if SO_name==mc.name: vaginal_first = mc.name
-                            else: vaginal_first = Person.get_random_male_name()
-                        else: vaginal_first = SO_name
-                    else: vaginal_first = Person.get_random_male_name()
-                    
-                    if sex_skill_array[2]<= 2: 
-                        vaginal_virgin = renpy.random.randint(2,sex_cap)
+                    #relationship
+                    if relationship != "Single":
+                        vaginal_first = SO_name if SO_name and SO_name != mc.name else Person.get_random_male_name()
+                    else:
+                        vaginal_first = Person.get_random_male_name()
+                    #sex_skill checks, use _virgin as placeholder
+                    #always re-roll 0s, always higher than 0
+                    if sex_skill_array[2]<= 0: 
+                        vaginal_virgin = renpy.random.randint(1,sex_cap)
                         sex_skill_array[2] = vaginal_virgin
-                    else: 
-                        if sex_skill_array[2]>10: vaginal_virgin = 10
-                        else: vaginal_virgin = 7
-
+                    #to give moms an edge, increase sex_skill by # of kids
+                    if sex_skill_array[2] <= Person.get_skill_ceiling()+kids:
+                        sex_skill_array[2] = renpy.random.randint(kids, Person.get_skill_ceiling()+kids)
+                    #set _virgin to normal
+                    vaginal_virgin = 3
+                    hymen = 2
                 #Anal Check
-                if (renpy.random.randint(1, 100))>=30: #30% chance of being virginal
-                    if relationship!="Single":
-                        if SO_name is None or SO_name is mc.name: 
-                            if SO_name==mc.name: anal_first = mc.name
-                            else: anal_first = Person.get_random_male_name()
-                        else: anal_first = SO_name
-                    else: anal_first = Person.get_random_male_name()
-                    if sex_skill_array[3]<= 2: 
-                        anal_virgin = renpy.random.randint(2,sex_cap)
+                if (renpy.random.randint(1, 100))<=90: #90% chance of NOT being virginal
+                    #relationship
+                    if relationship != "Single":
+                        anal_first = SO_name if SO_name and SO_name != mc.name else Person.get_random_male_name()
+                    else:
+                        anal_first = Person.get_random_male_name()
+                    #sex_skill checks, use _virgin as placeholder
+                    #always re-roll 0s, always higher than 0
+                    if sex_skill_array[3]<= 0:
+                        anal_virgin = renpy.random.randint(1,sex_cap)
                         sex_skill_array[3] = anal_virgin
-                    else: 
-                        if sex_skill_array[3]>10: anal_virgin = 10
-                        else: anal_virgin = sex_skill_array[3]
+                    #set _virgin to normal
+                    anal_virgin = 3
                 else:
+                    anal_first is None
                     anal_virgin = 0
                     sex_skill_array[3] = 0
 
@@ -977,6 +1172,8 @@ def create_party_schedule(person: Person):
         return  # no party for the working girls
     if person.pregnancy_is_visible:
         return  # no party for girls who already show the baby bump
+    if person.has_job(prostitute_job):
+        return  # working girls always have a party
 
     # clear old party schedule (clear after stripper check as to not clear her override schedule during foreclosed phase)
     person.set_override_schedule(None, time_slots = [4])
