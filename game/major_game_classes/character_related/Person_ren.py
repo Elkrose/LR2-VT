@@ -1440,15 +1440,15 @@ class Person(): #Everything that needs to be known about a person.
 
     @property
     def fname(self) -> str:
+        global talking_person
         if self.is_stranger:
             return self.create_formatted_title("???")
-        if self.has_job(prostitute_job):    # always use her stage name
-            return self.title
-        if ("talking_person" not in globals() or talking_person is None) and self.is_family: # always use their title when MC is talking
-            return self.title
+        if talking_person is None:
+            if self.is_family or self.has_job(prostitute_job): # always use their title when MC is talking
+                return self.title
 
         name = self.create_formatted_title(self.name)
-        if "talking_person" in globals() and isinstance(talking_person, Person) and town_relationships.is_family(self, talking_person):
+        if isinstance(talking_person, Person) and town_relationships.is_family(self, talking_person):
             relation = town_relationships.get_relationship_type(talking_person, self)
             if relation == "Mother":
                 return self.create_formatted_title("Mom")
@@ -4616,11 +4616,7 @@ class Person(): #Everything that needs to be known about a person.
     def cum_in_mouth(self, add_to_record = True): #Add the appropriate stuff to their current outfit, and perform any personal checks if required.
         mc.listener_system.fire_event("sex_cum_mouth", the_person = self)
         self.oral_cum +=1
-        if self.outfit.can_add_accessory(mouth_cum):
-            the_cumshot = mouth_cum.get_copy()
-            the_cumshot.layer = 0
-            self.outfit.add_accessory(the_cumshot)
-
+        self.outfit.add_mouth_cum()
         self.change_slut(self.opinion.drinking_cum, add_to_log = add_to_record)
         self.change_happiness(5 * self.opinion.drinking_cum, add_to_log = add_to_record)
         self.discover_opinion("drinking cum", add_to_log = add_to_record)
@@ -4640,10 +4636,7 @@ class Person(): #Everything that needs to be known about a person.
     def cum_in_vagina(self, add_to_record = True):
         mc.listener_system.fire_event("sex_cum_vagina", the_person = self)
         self.vaginal_cum +=1
-        if self.outfit.can_add_accessory(creampie_cum):
-            the_cumshot = creampie_cum.get_copy()
-            the_cumshot.layer = 0
-            self.outfit.add_accessory(the_cumshot)
+        self.outfit.add_creampie_cum()
 
         slut_change_amount = self.opinion.creampies
 
@@ -4676,10 +4669,7 @@ class Person(): #Everything that needs to be known about a person.
         mc.listener_system.fire_event("sex_cum_ass", the_person = self)
         self.anal_cum +=1
         #TODO: Add an anal specific cumshot once we have renders for it.
-        if self.outfit.can_add_accessory(creampie_cum):
-            the_cumshot = creampie_cum.get_copy()
-            the_cumshot.layer = 0
-            self.outfit.add_accessory(the_cumshot)
+        self.outfit.add_creampie_cum()
 
         if not self.wants_creampie:
             self.change_love(-2 + self.opinion.anal_creampies, add_to_log = add_to_record)
@@ -4702,10 +4692,7 @@ class Person(): #Everything that needs to be known about a person.
 
     def cum_on_face(self, add_to_record = True):
         mc.listener_system.fire_event("sex_cum_on_face", the_person = self)
-        if self.outfit.can_add_accessory(face_cum):
-            the_cumshot = face_cum.get_copy()
-            the_cumshot.layer = 0
-            self.outfit.add_accessory(the_cumshot)
+        self.outfit.add_face_cum()
 
         self.change_slut(self.opinion.cum_facials, add_to_log = add_to_record)
         self.change_happiness(5 * self.opinion.cum_facials, add_to_log = add_to_record)
@@ -4728,15 +4715,7 @@ class Person(): #Everything that needs to be known about a person.
 
     def cum_on_tits(self, add_to_record = True):
         mc.listener_system.fire_event("sex_cum_on_tits", the_person = self)
-        if self.outfit.can_add_accessory(tits_cum):
-            the_cumshot = tits_cum.get_copy()
-            upper_item = next((x for x in self.outfit.get_upper_ordered() if not x.half_off), None)
-            if upper_item:
-                top_layer = upper_item.layer
-            else:
-                top_layer = -1
-            the_cumshot.layer = top_layer + 1
-            self.outfit.add_accessory(the_cumshot)
+        self.outfit.add_tits_cum()
 
         self.change_slut(self.opinion.being_covered_in_cum, add_to_log = add_to_record)
         self.change_happiness(5 * self.opinion.being_covered_in_cum, add_to_log = add_to_record)
@@ -4756,15 +4735,7 @@ class Person(): #Everything that needs to be known about a person.
 
     def cum_on_stomach(self, add_to_record = True):
         mc.listener_system.fire_event("sex_cum_on_stomach", the_person = self)
-        if self.outfit.can_add_accessory(stomach_cum):
-            the_cumshot = stomach_cum.get_copy()
-            upper_item = next((x for x in self.outfit.get_upper_ordered() if not x.half_off), None)
-            if upper_item:
-                top_layer = upper_item.layer
-            else:
-                top_layer = -1
-            the_cumshot.layer = top_layer + 1
-            self.outfit.add_accessory(the_cumshot)
+        self.outfit.add_stomach_cum()
 
         self.change_slut(self.opinion.being_covered_in_cum, add_to_log = add_to_record)
         self.change_happiness(5 * self.opinion.being_covered_in_cum, add_to_log = add_to_record)
@@ -4784,15 +4755,7 @@ class Person(): #Everything that needs to be known about a person.
 
     def cum_on_ass(self, add_to_record = True):
         mc.listener_system.fire_event("sex_cum_on_ass", the_person = self)
-        if self.outfit.can_add_accessory(ass_cum):
-            the_cumshot = ass_cum.get_copy()
-            lower_item = next((x for x in self.outfit.get_lower_ordered() if not x.half_off), None)
-            if lower_item:
-                top_layer = lower_item.layer
-            else:
-                top_layer = -1
-            the_cumshot.layer = top_layer + 1
-            self.outfit.add_accessory(the_cumshot)
+        self.outfit.add_ass_cum()
 
         self.change_slut(self.opinion.being_covered_in_cum, add_to_log = add_to_record)
         self.change_happiness(5 * self.opinion.being_covered_in_cum, add_to_log = add_to_record)
