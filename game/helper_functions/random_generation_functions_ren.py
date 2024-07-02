@@ -940,6 +940,14 @@ def create_old_hooker_with_daughter():
     person = create_hooker()
     person.age = 43
     daughter = person.generate_daughter(job = prostitute_job)
+    # make sure minimum hooker opinions are set for daughter
+    daughter.set_opinion("high heels", 2, False)
+    daughter.set_opinion("pants", -2, False)
+    daughter.set_opinion("skirts", 2, False)
+    daughter.set_opinion("bareback sex", -2, False)
+    daughter.set_opinion("giving blowjobs", 2, False)
+    daughter.set_opinion("skimpy outfits", 2, False)
+    daughter.set_opinion("vaginal sex", 2, False)
     daughter.set_mc_title("Daddy")
     return daughter
 
