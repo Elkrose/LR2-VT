@@ -149,6 +149,9 @@ label instantiate_map_locations():
         sex_store = Room("sex_store", "Sex Store", "Sex_Shop_Background", generic_store_objects,
             map_pos = [1,1], visible = False, lighting_conditions = standard_indoor_lighting,
             privacy_level = 1, accessible_func = sex_shop_is_open)
+        sex_store_storage = Room("sex_store_storage", "Sex Store Storage", "Sex_Shop_Backroom_Background", [make_wall(), make_floor(), make_mirror(), make_bench()],
+            map_pos = [2,1], visible = False, lighting_conditions = standard_indoor_lighting,
+            privacy_level = 2, accessible_func = sex_shop_is_open)
 
         ## Mall supporting locations
         changing_room = Room("changing_room", "Changing Room", "Changing_Room_Background", changing_room_objects,
@@ -254,6 +257,7 @@ label instantiate_map_locations():
             clothing_store,
             changing_room,
             sex_store,
+            sex_store_storage,
             home_store,
             gym,
             gym_shower,
@@ -304,7 +308,7 @@ label instantiate_map_hubs():
         aunt_home_hub = MapHub("aunt_home", "Rebecca's Apartment", icon = "POI_House", position = Point(150, 255), locations = [aunt_apartment,aunt_bedroom, cousin_bedroom])
         office_hub = MapHub("office", business_name, icon = "POI_Business", position = Point(1295, 365), locations = [lobby, m_division, p_division, rd_division, office, ceo_office, clone_facility, testing_room, work_bathroom, storage_room])
         mall_hub = MapHub("mall", "Shopping Mall", icon = "POI_Mall", position = Point(640, 360), locations = [mall, home_store, clothing_store, electronics_store, office_store, mall_salon, gaming_cafe, gaming_cafe_store_room, mall_bathroom], accessible_func = mall_is_open)
-        sex_shop_hub = MapHub("sex_shop", "Starbuck's Sex\u00A0Shop", icon = "POI_Sexshop", position = Point(770, 120), locations = [sex_store], accessible_func = sex_shop_is_open)
+        sex_shop_hub = MapHub("sex_shop", "Starbuck's Sex\u00A0Shop", icon = "POI_Sexshop", position = Point(770, 120), locations = [sex_store, sex_store_storage], accessible_func = sex_shop_is_open)
         downtown_hub = MapHub("downtown", "Downtown", icon = "POI_Downtown", position = Point(560, 800), locations = [mom_office_lobby, mom_offices, downtown_bar, coffee_shop, downtown, downtown_hotel, downtown_hotel_room, fancy_restaurant, hospital, hospital_room, downtown_bar_bathroom, office_photocopy_room])
         plaza_hub = MapHub("plaza", "City Plaza", icon = "POI_Police", position = Point(500, 550), locations = [city_hall, police_station, police_jail])
         gym_hub = MapHub("gym", "Gym", icon = "POI_Gym", position = Point(890, 615), locations = [gym, gym_shower], accessible_func = gym_is_open)
@@ -319,7 +323,7 @@ label instantiate_map_hubs():
 
         industrial_home_hub = HomeHub("industrial", "Bay\u00A0Area Condos", icon = "District_Industrial", position = Point(1050, 210),
             people = [ellie, stephanie, ashley, sarah, alexia, candace],
-            jobs = [hr_job, market_job, rd_job, supply_job, production_job, head_researcher_job, office_worker_job,
+            jobs = [hr_job, market_job, rd_job, supply_job, production_job, head_researcher_job, personal_secretary_job, office_worker_job,
                 home_improvement_support_job, electronics_support_job,
                 stripclub_stripper_job, stripclub_waitress_job, stripclub_bdsm_performer_job, stripclub_manager_job, stripclub_mistress_job])
 
