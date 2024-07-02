@@ -195,8 +195,8 @@ label small_talk_person(the_person, apply_energy_cost = True, is_phone = False):
             "So [name], what's been on your mind recently?",
             "Hey [name], how are you today?",
             "Good [day_part] [name], anything new?",
-            "Good [day_part] [name], it's a beautiful day, isn't it?",
-            "Hello [name], what are you up to this [day_part]?"
+            "Good [day_part] [name], what's going on?",
+            "Hello [name], what are you up to?"
         ]))
         the_person.discover_opinion("small talk")
 

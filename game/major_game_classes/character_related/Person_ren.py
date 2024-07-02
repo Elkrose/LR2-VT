@@ -185,7 +185,7 @@ class Person(): #Everything that needs to be known about a person.
 
     _final_work_experience_floor = 1
     _initial_work_experience_floor = 1
-    _initial_work_experience_ceiling = 3
+    _initial_work_experience_ceiling = 2
     _final_work_experience_ceiling = 5
 
     _initial_age_floor = 18
@@ -1404,6 +1404,9 @@ class Person(): #Everything that needs to be known about a person.
 
         # only change outfit when not following mc
         if self.follow_mc:
+            # when moving to a non-private location, make sure she is dressed properly
+            if self._follow_mc_outfit and not destination.is_private:
+                self.apply_outfit(self._follow_mc_outfit)
             return True
 
         self.apply_planned_outfit(show_dress_sequence = False)
@@ -1427,10 +1430,12 @@ class Person(): #Everything that needs to be known about a person.
 
     @property
     def follow_mc(self) -> bool:
+        self._follow_mc_outfit = self.current_planned_outfit
         return self._follow_mc
 
     @follow_mc.setter
     def follow_mc(self, value):
+        self._follow_mc_outfit = None
         self._follow_mc = value
 
     @property
@@ -3375,7 +3380,7 @@ class Person(): #Everything that needs to be known about a person.
 
     def review_outfit(self, dialogue = True):
         if not self.has_cum_fetish:
-            self.outfit.remove_all_cum()
+            self.outfit.remove_all_cum(from_clothing = False)
 
         if (not self.is_wearing_planned_outfit
             and (self.location.person_count > 1
@@ -4249,7 +4254,7 @@ class Person(): #Everything that needs to be known about a person.
 
     @property
     def on_birth_control(self) -> bool:
-        return self.is_infertile or self._birth_control
+        return self.is_infertile or self.fertility_percent < 0 or self._birth_control
 
     @on_birth_control.setter
     def on_birth_control(self, value: bool):
@@ -6075,6 +6080,13 @@ class Person(): #Everything that needs to be known about a person.
         Return True when event day is set
         '''
         return dict_key in self.event_triggers_dict
+
+    def has_event_delay(self, dict_key: str, delay: int = 7) -> bool:
+        '''
+        Retruns True when dict_key is not set or delay for dict_key has passed
+        delay: number of days passed since dict_key was set
+        '''
+        return not self.has_event_day(dict_key) or self.days_since_event(dict_key) > delay
 
     def set_event_day(self, dict_key: str, set_day = None):
         '''
