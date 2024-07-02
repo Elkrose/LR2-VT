@@ -108,7 +108,7 @@ def build_menu_item_list(element_list, draw_hearts_for_people = True, draw_perso
                 if item.serum_effects:
                     if len(item.serum_effects) > item.serum_tolerance:
                         info.append("{image=vial3_token_small}")
-                    elif len(item.serum_effects) > 1:
+                    elif len(item.serum_effects) == item.serum_tolerance:
                         info.append("{image=vial2_token_small}")
                     else:
                         info.append("{image=vial_token_small}")
