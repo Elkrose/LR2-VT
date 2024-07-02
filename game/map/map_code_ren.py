@@ -85,13 +85,13 @@ def get_location_tooltip(location: Room) -> str:
         info = []
         #added girlfriend statuses to beginning
         if person.is_favourite:
-            info.append("{image=full_star_token_small}")
+            info.append(" {image=full_star_token_small}")
         else:
-            info.append("{image=empty_token_small}")
+            info.append(" {image=empty_token_small}")
         if person.type=="story":
-            info.append("{image=labbook_token_small}")
+            info.append(" {image=labbook_token_small}")
         else:
-            info.append("{image=empty_token_small}")
+            info.append(" {image=empty_token_small}")
         info.append(" ")
         info.append(person.name)
         info.append(" ")
